@@ -1,8 +1,8 @@
-package org.simplecrud.dao;
+package org.simplecrud.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.simplecrud.model.User;
+import org.simplecrud.entity.User;
 
 import java.util.Optional;
 

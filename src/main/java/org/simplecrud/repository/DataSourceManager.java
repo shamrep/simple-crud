@@ -1,4 +1,4 @@
-package org.simplecrud.dao;
+package org.simplecrud.repository;
 
 import org.postgresql.ds.PGSimpleDataSource;
 

@@ -1,6 +1,6 @@
-package org.simplecrud.dao;
+package org.simplecrud.repository;
 
-import org.simplecrud.model.User;
+import org.simplecrud.entity.User;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

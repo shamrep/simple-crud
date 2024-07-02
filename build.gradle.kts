@@ -1,5 +1,8 @@
+import org.gradle.internal.impldep.com.fasterxml.jackson.core.JsonPointer.compile
+
 plugins {
     id("java")
+    id("war")
 }
 
 group = "org.simplecrud"
@@ -19,6 +22,8 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.34")
 
     implementation("org.postgresql:postgresql:42.7.1")
+//    implementation("javax.servlet:javax.servlet-api:4.0.1")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
 }
 
 tasks.test {

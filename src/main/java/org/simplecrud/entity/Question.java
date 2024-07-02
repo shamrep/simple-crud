@@ -1,4 +1,4 @@
-package org.simplecrud.model;
+package org.simplecrud.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,4 @@ import java.util.List;
 public class Question {
     private long id;
     private String text;
-    private List<String> answers;
-    private List<Tag> tags;
-    private int correctAnswer;
 }

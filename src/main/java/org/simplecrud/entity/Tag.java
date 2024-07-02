@@ -1,4 +1,4 @@
-package org.simplecrud.model;
+package org.simplecrud.entity;
 
 public class Tag {
     private long id;
