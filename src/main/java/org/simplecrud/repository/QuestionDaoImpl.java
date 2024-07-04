@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class QuestionDaoImpl implements Dao<Question> {
 
-    private  final DataSource dataSource;
+    private final DataSource dataSource;
 
     public QuestionDaoImpl(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -22,10 +22,10 @@ public class QuestionDaoImpl implements Dao<Question> {
     @Override
     public Optional<Question> get(long id) {
         Question question = null;
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM question WHERE id = ?;");) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM question WHERE id = ?;")) {
             preparedStatement.setLong(1, id);
-            try( ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     question = new Question(resultSet.getLong("id"), resultSet.getString("text"));
                     return Optional.of(question);
