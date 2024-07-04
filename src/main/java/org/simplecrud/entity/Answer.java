@@ -8,4 +8,5 @@ import lombok.Setter;
 public class Answer {
     private long id;
     private long text;
+    private boolean isCorrect;
 }
