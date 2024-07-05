@@ -29,7 +29,7 @@ dependencies {
     implementation("org.apache.tomcat.embed:tomcat-embed-core:10.1.25")
     implementation("org.apache.tomcat.embed:tomcat-embed-jasper:10.1.25")
 
-
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 }
 
 tasks.test {
