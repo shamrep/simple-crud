@@ -5,6 +5,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import javax.sql.DataSource;
 
 public class DataSourceManager {
+
     private static final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
     static {

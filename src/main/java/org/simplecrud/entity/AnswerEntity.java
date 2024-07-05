@@ -1,12 +1,12 @@
 package org.simplecrud.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
-@Setter
-public class Answer {
+public class AnswerEntity {
     private long id;
-    private long text;
+    private String text;
     private boolean isCorrect;
 }

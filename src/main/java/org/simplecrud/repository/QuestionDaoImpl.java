@@ -1,60 +1,65 @@
 package org.simplecrud.repository;
 
-import org.simplecrud.entity.Question;
+import org.simplecrud.entity.QuestionEntity;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class QuestionDaoImpl implements Dao<Question> {
+public class QuestionDaoImpl implements Dao<QuestionEntity> {
 
     private final DataSource dataSource;
 
     public QuestionDaoImpl(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
 
+    public QuestionDaoImpl() {
+        this.dataSource = DataSourceManager.getDataSource();
     }
 
     @Override
-    public Optional<Question> get(long id) {
-        Question question = null;
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM question WHERE id = ?;")) {
+    public Optional<QuestionEntity> get(long id) {
+        QuestionEntity questionEntity = null;
+
+        try (var connection = dataSource.getConnection();
+             var preparedStatement = connection.prepareStatement("SELECT * FROM question WHERE id = ?;")) {
+
             preparedStatement.setLong(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            try (var resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    question = new Question(resultSet.getLong("id"), resultSet.getString("text"));
-                    return Optional.of(question);
+                    questionEntity = new QuestionEntity(resultSet.getLong("id"), resultSet.getString("text"));
+                    return Optional.of(questionEntity);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
+        var test = (Object) null;
+
         return Optional.empty();
     }
 
     @Override
-    public List<Question> getAll() {
+    public List<QuestionEntity> getAll() {
         return List.of();
     }
 
     @Override
-    public void save(Question question) {
+    public void save(QuestionEntity questionEntity) {
 
     }
 
     @Override
-    public void update(Question question, String[] params) {
+    public void update(QuestionEntity questionEntity, String[] params) {
 
     }
 
     @Override
-    public void delete(Question question) {
+    public void delete(QuestionEntity questionEntity) {
 
     }
 }
