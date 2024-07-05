@@ -2,7 +2,7 @@ package org.simplecrud.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.simplecrud.entity.QuestionEntity;
+import org.simplecrud.repository.entity.QuestionEntity;
 
 import java.util.Optional;
 

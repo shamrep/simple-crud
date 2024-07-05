@@ -1,4 +1,4 @@
-package org.simplecrud.entity;
+package org.simplecrud.repository.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

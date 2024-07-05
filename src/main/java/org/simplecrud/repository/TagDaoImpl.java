@@ -1,6 +1,6 @@
 package org.simplecrud.repository;
 
-import org.simplecrud.entity.TagEntity;
+import org.simplecrud.repository.entity.TagEntity;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

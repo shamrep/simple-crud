@@ -1,8 +1,8 @@
 package org.simplecrud.service;
 
-import org.simplecrud.entity.AnswerEntity;
-import org.simplecrud.entity.QuestionEntity;
-import org.simplecrud.entity.TagEntity;
+import org.simplecrud.repository.entity.AnswerEntity;
+import org.simplecrud.repository.entity.QuestionEntity;
+import org.simplecrud.repository.entity.TagEntity;
 import org.simplecrud.repository.AnswerDaoImpl;
 import org.simplecrud.repository.QuestionDaoImpl;
 import org.simplecrud.repository.TagDaoImpl;

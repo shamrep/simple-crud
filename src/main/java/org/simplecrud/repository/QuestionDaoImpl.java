@@ -1,6 +1,6 @@
 package org.simplecrud.repository;
 
-import org.simplecrud.entity.QuestionEntity;
+import org.simplecrud.repository.entity.QuestionEntity;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;

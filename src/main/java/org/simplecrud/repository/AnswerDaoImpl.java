@@ -1,7 +1,6 @@
 package org.simplecrud.repository;
 
-import org.simplecrud.entity.AnswerEntity;
-import org.simplecrud.service.model.Answer;
+import org.simplecrud.repository.entity.AnswerEntity;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
