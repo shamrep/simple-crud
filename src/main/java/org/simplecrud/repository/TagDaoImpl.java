@@ -23,10 +23,11 @@ public class TagDaoImpl implements Dao<TagEntity> {
         List<TagEntity> tagEntities = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT tag.id, tag.text FROM tag JOIN question_tags ON tag.id = question_tags.tag_id WHERE question_id = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT tag.id, tag.name FROM tag JOIN question_tag ON tag.id = question_tag.tag_id WHERE question_id = ?")) {
+            preparedStatement.setLong(1, questionId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    tagEntities.add(new TagEntity(resultSet.getLong("id"), resultSet.getString("text")));
+                    tagEntities.add(new TagEntity(resultSet.getLong("id"), resultSet.getString("name")));
                 }
             }
         } catch (SQLException e) {
@@ -48,7 +49,7 @@ public class TagDaoImpl implements Dao<TagEntity> {
                 if (resultSet.next()) {
                     TagEntity entity = new TagEntity(
                             resultSet.getLong("id"),
-                            resultSet.getString("text"));
+                            resultSet.getString("name"));
 
                     return Optional.of(entity);
                 }

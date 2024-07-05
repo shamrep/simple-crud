@@ -35,7 +35,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         for (TagEntity entity : tagEntities) {
-            tags.add(new Tag(entity.getId(), entity.getContent()));
+            tags.add(new Tag(entity.getId(), entity.getName()));
         }
 
         return new Question(questionEntity.getId(), questionEntity.getContent(), answers, tags);

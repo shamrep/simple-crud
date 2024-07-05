@@ -30,7 +30,7 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
 
             try (var resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    questionEntity = new QuestionEntity(resultSet.getLong("id"), resultSet.getString("text"));
+                    questionEntity = new QuestionEntity(resultSet.getLong("id"), resultSet.getString("content"));
                     return Optional.of(questionEntity);
                 }
             }

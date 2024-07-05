@@ -9,17 +9,17 @@ import java.util.Objects;
 @Getter
 public class TagEntity {
     private long id;
-    private String content;
+    private String name;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof TagEntity entity)) return false;
-        return id == entity.id && Objects.equals(content, entity.content);
+        return id == entity.id && Objects.equals(name, entity.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content);
+        return Objects.hash(id, name);
     }
 }

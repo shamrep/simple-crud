@@ -28,7 +28,7 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
             preparedStatement.setLong(1, questionId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    answers.add(new AnswerEntity(resultSet.getLong("id"), resultSet.getString("text"), resultSet.getBoolean("is_correct")));
+                    answers.add(new AnswerEntity(resultSet.getLong("id"), resultSet.getString("content"), resultSet.getBoolean("is_correct")));
                 }
             }
         } catch (SQLException e) {
