@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Question {
     private long id;
-    private String text;
+    private String content;
     private List<Answer> answers;
     private List<Tag> tags;
 }

@@ -28,6 +28,6 @@ public class QuestionDaoImplTest {
         assertFalse(optionalQuestion.isEmpty());
 
         assertEquals(1, selectedQuestionEntity.getId());
-        assertEquals(questionEntity.getText(), selectedQuestionEntity.getText());
+        assertEquals(questionEntity.getContent(), selectedQuestionEntity.getContent());
     }
 }

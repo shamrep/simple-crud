@@ -31,13 +31,13 @@ public class QuestionServiceImpl implements QuestionService {
         List<Tag> tags = new ArrayList<>();
 
         for (AnswerEntity entity : answerEntities) {
-            answers.add(new Answer(entity.getId(), entity.getText(), entity.isCorrect()));
+            answers.add(new Answer(entity.getId(), entity.getContent(), entity.isCorrect()));
         }
 
         for (TagEntity entity : tagEntities) {
-            tags.add(new Tag(entity.getId(), entity.getText()));
+            tags.add(new Tag(entity.getId(), entity.getContent()));
         }
 
-        return new Question(questionEntity.getId(), questionEntity.getText(), answers, tags);
+        return new Question(questionEntity.getId(), questionEntity.getContent(), answers, tags);
     }
 }

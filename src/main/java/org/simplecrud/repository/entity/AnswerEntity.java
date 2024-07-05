@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 public class AnswerEntity {
     private long id;
-    private String text;
+    private String content;
     private boolean isCorrect;
 }

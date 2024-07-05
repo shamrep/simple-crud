@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Answer {
     private long id;
-    private String text;
+    private String content;
     private boolean isCorrect;
 }

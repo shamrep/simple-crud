@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class QuestionEntity {
     private long id;
-    private String text;
+    private String content;
 }
