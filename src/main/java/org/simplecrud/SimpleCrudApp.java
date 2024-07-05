@@ -6,7 +6,6 @@ import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.startup.ContextConfig;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.StandardRoot;
-import org.simplecrud.controller.MainController;
 
 import java.io.File;
 import java.net.URL;
