@@ -2,7 +2,8 @@ import org.gradle.internal.impldep.com.fasterxml.jackson.core.JsonPointer.compil
 
 plugins {
     id("java")
-    id("war")
+    id("application")
+//    id("war")
 }
 
 group = "org.simplecrud"
@@ -24,8 +25,15 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.1")
 //    implementation("javax.servlet:javax.servlet-api:4.0.1")
     implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
+
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:10.1.25")
+    implementation("org.apache.tomcat.embed:tomcat-embed-jasper:10.1.25")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass = "org.simplecrud.SimpleCrudApp"
 }
