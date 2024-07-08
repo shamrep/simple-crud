@@ -15,7 +15,7 @@ public class FrontController extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        dispatcher.dispatch(new ReqResp(req, resp));
+        dispatcher.dispatch(new Req(req), new Resp(resp));
     }
 
     @Override

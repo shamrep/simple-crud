@@ -3,7 +3,9 @@ package org.simplecrud.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.simplecrud.controller.action.Action;
 import org.simplecrud.controller.action.GetQuestionAction;
+import org.simplecrud.controller.action.ResourceNotFoundAction;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,12 +16,23 @@ public class Dispatcher {
         this.actionMap.put(new Route("question", Route.HttpMethod.GET), new GetQuestionAction());
     }
 
-    public void dispatch(ReqResp reqResp) {
-        actionMap.get(getRoute(reqResp)).process(reqResp);
+    public void dispatch(Req req, Resp resp) {
+        try {
+            Action action = actionMap.get(getRoute(req, resp));
+
+            if(action == null) {
+              action = new ResourceNotFoundAction();
+            }
+
+            action.process(req, resp);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private Route getRoute(ReqResp reqResp) {
-        HttpServletRequest request = reqResp.getRequest();
+    private Route getRoute(Req req, Resp resp) {
+        HttpServletRequest request = req.getRequest();
 
         String path = request.getPathInfo();
         String[] splitPath = path.split("/");

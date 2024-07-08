@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ReqResp {
+public class Req {
     private HttpServletRequest request;
-    private HttpServletResponse response;
+
 }
