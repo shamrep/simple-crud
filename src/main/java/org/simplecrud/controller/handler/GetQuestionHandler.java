@@ -1,58 +1,47 @@
 package org.simplecrud.controller.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletResponse;
 import org.simplecrud.controller.Request;
 import org.simplecrud.controller.Response;
+import org.simplecrud.controller.dto.AnswerDto;
 import org.simplecrud.controller.dto.QuestionDto;
+import org.simplecrud.controller.dto.TagDto;
 import org.simplecrud.service.QuestionService;
 import org.simplecrud.service.QuestionServiceImpl;
 import org.simplecrud.service.model.Question;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class GetQuestionHandler implements Handler {
 
-    private final QuestionService service;
+    private final QuestionService questionService;
 
     public GetQuestionHandler() {
-        service = new QuestionServiceImpl();
+        questionService = new QuestionServiceImpl();
     }
 
     @Override
     public Response handle(Request request) {
-        return Response.ok(new QuestionDto(1, "Test"));
+//        long questionId = request.getPathParameter("id", Long.class); // TODO: implement
+        long questionId = 1;
+        Optional<Question> question = questionService.findQuestionById(questionId);
 
-//        String path = request.getRequest().getPathInfo();
-//        String[] splitPath = path.split("/");
-//        long id = Long.valueOf(splitPath[2]);
-//
-//        Optional<Question> optionalQuestion = service.findQuestionById(id);
-//
-//        try {
-//            if (optionalQuestion.isPresent()) {
-//                Question question = optionalQuestion.get();
-//                QuestionDto questionDto = service.toQuestionDto(question);
-//
-//                ObjectMapper mapper = new ObjectMapper();
-//
-//                String json = mapper.writeValueAsString(questionDto);
-//
-//                resp.getResponse().getWriter().print(json);
-//                resp.getResponse().setContentType("application/json");
-//                resp.getResponse().setCharacterEncoding("UTF-8");
-//                resp.getResponse().setStatus(HttpServletResponse.SC_OK);
-//
-//            } else {
-//                Handler handler = new NotFoundHandler();
-//                handler.process(request, resp);
-//            }
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        return question
+                .map(q -> Response.ok(toQuestionDto(q)))
+                .orElse(Response.notFound());
+    }
+
+    private static QuestionDto toQuestionDto(Question question) {
+        List<TagDto> tagDtos = question.getTags()
+                .stream()
+                .map(t -> new TagDto(t.getId(), t.getName()))
+                .toList();
+
+        List<AnswerDto> answerDtos = question.getAnswers()
+                .stream()
+                .map(a -> new AnswerDto(a.getId(), a.getContent(), a.isCorrect()))
+                .toList();
+
+        return new QuestionDto(question.getId(), question.getContent(), answerDtos, tagDtos);
     }
 }

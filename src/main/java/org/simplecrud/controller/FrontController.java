@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.simplecrud.controller.handler.Handler;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 @WebServlet("/*")
 public class FrontController extends HttpServlet {
@@ -41,9 +42,13 @@ public class FrontController extends HttpServlet {
         Response response = handler.handle(request);
 
         res.setStatus(response.getStatusCode());
+        res.setContentType("application/json");
+        writeBodyToOutputStream(response.getBody(), res.getOutputStream());
+    }
 
+    private void writeBodyToOutputStream(Object body, OutputStream os) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(res.getOutputStream(), response.getBody());
+        objectMapper.writeValue(os, body);
     }
 
     private Handler notFoundHandler() {

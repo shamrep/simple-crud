@@ -2,8 +2,6 @@ package org.simplecrud.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.simplecrud.service.model.Answer;
-import org.simplecrud.service.model.Tag;
 
 import java.util.List;
 
@@ -11,7 +9,9 @@ import java.util.List;
 @Getter
 public class QuestionDto {
 
-    private long id;
-    private String content;
+    private final long id;
+    private final String content;
+    private final List<AnswerDto> answers;
+    private final List<TagDto> tags;
 
 }

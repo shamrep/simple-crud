@@ -1,6 +1,5 @@
 package org.simplecrud.service;
 
-import org.simplecrud.controller.dto.QuestionDto;
 import org.simplecrud.repository.entity.AnswerEntity;
 import org.simplecrud.repository.entity.QuestionEntity;
 import org.simplecrud.repository.entity.TagEntity;
@@ -35,12 +34,6 @@ public class QuestionServiceImpl implements QuestionService {
        return  Optional.empty();
     }
 
-    @Override
-    public QuestionDto toQuestionDto(Question question) {
-        return null;
-//        return new QuestionDto(question.getId(), question.getContent(), question.getAnswers(), question.getTags());
-    }
-
     private Question toQuestion(QuestionEntity questionEntity, List<AnswerEntity> answerEntities, List<TagEntity> tagEntities) {
         List<Answer> answers = new ArrayList<>();
         List<Tag> tags = new ArrayList<>();
@@ -56,16 +49,4 @@ public class QuestionServiceImpl implements QuestionService {
         return new Question(questionEntity.getId(), questionEntity.getContent(), answers, tags);
     }
 
-    private QuestionEntity toQuestionEntity(Question question) {
-        return new QuestionEntity(question.getId(), question.getContent());
-    }
-
-    public Question toQuestion(QuestionDto questionDto) {
-        return new Question(questionDto.getId(), questionDto.getContent(), new ArrayList<>(), new ArrayList<>());
-    }
-
-    @Override
-    public long save(Question question) {
-        return questionDao.save(toQuestionEntity(question));
-    }
 }
