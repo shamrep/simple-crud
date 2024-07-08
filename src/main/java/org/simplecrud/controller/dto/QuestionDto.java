@@ -10,8 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class QuestionDto {
+
     private long id;
     private String content;
-    List<Answer> answers;
-    private List<Tag> tags;
+
 }

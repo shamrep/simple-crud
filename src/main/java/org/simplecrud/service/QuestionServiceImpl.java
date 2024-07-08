@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class QuestionServiceImpl implements QuestionService {
+
     private final AnswerDaoImpl answerDao = new AnswerDaoImpl();
     private final QuestionDaoImpl questionDao = new QuestionDaoImpl();
     private final TagDaoImpl tagDao = new TagDaoImpl();
@@ -36,7 +37,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDto toQuestionDto(Question question) {
-        return new QuestionDto(question.getId(), question.getContent(), question.getAnswers(), question.getTags());
+        return null;
+//        return new QuestionDto(question.getId(), question.getContent(), question.getAnswers(), question.getTags());
     }
 
     private Question toQuestion(QuestionEntity questionEntity, List<AnswerEntity> answerEntities, List<TagEntity> tagEntities) {
