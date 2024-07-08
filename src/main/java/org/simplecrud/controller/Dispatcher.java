@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.simplecrud.controller.action.Action;
 import org.simplecrud.controller.action.GetQuestionAction;
 import org.simplecrud.controller.action.ResourceNotFoundAction;
+import org.simplecrud.controller.action.SaveQuestion;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class Dispatcher {
 
     public Dispatcher() {
         this.actionMap.put(new Route("question", Route.HttpMethod.GET), new GetQuestionAction());
+        this.actionMap.put(new Route("question", Route.HttpMethod.POST), new SaveQuestion());
     }
 
     public void dispatch(Req req, Resp resp) {

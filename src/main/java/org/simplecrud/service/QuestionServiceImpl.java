@@ -53,4 +53,17 @@ public class QuestionServiceImpl implements QuestionService {
 
         return new Question(questionEntity.getId(), questionEntity.getContent(), answers, tags);
     }
+
+    private QuestionEntity toQuestionEntity(Question question) {
+        return new QuestionEntity(question.getId(), question.getContent());
+    }
+
+    public Question toQuestion(QuestionDto questionDto) {
+        return new Question(questionDto.getId(), questionDto.getContent(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    @Override
+    public long save(Question question) {
+        return questionDao.save(toQuestionEntity(question));
+    }
 }

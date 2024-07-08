@@ -39,7 +39,8 @@ public class GetQuestionAction implements Action {
                 String json = mapper.writeValueAsString(questionDto);
 
                 resp.getResponse().getWriter().print(json);
-                resp.getResponse().setContentType("application/json; charset=UTF-8");
+                resp.getResponse().setContentType("application/json");
+                resp.getResponse().setCharacterEncoding("UTF-8");
                 resp.getResponse().setStatus(HttpServletResponse.SC_OK);
 
             } else {

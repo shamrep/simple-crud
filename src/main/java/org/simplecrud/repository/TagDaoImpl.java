@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TagDaoImpl implements Dao<TagEntity> {
+public class TagDaoImpl  {
 
     private final DataSource dataSource;
 
@@ -37,7 +37,7 @@ public class TagDaoImpl implements Dao<TagEntity> {
         return tagEntities;
     }
 
-    @Override
+
     public Optional<TagEntity> get(long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
@@ -61,23 +61,5 @@ public class TagDaoImpl implements Dao<TagEntity> {
         return Optional.empty();
     }
 
-    @Override
-    public List<TagEntity> getAll() {
-        return List.of();
-    }
 
-    @Override
-    public void save(TagEntity tagEntity) {
-
-    }
-
-    @Override
-    public void update(TagEntity tagEntity, String[] params) {
-
-    }
-
-    @Override
-    public void delete(TagEntity tagEntity) {
-
-    }
 }

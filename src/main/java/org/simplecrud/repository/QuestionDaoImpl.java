@@ -3,6 +3,9 @@ package org.simplecrud.repository;
 import org.simplecrud.repository.entity.QuestionEntity;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +52,23 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
     }
 
     @Override
-    public void save(QuestionEntity questionEntity) {
+    public long save(QuestionEntity questionEntity) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO question (content) VALUES (?);")) {
+            preparedStatement.setString(1, questionEntity.getContent());
+            int rowsInserted = preparedStatement.executeUpdate();
 
+            if (rowsInserted > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getLong(1);
+                    }
+N                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
     }
 
     @Override

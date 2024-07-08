@@ -20,7 +20,7 @@ public class FrontController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        dispatcher.dispatch(new ReqResp(req, resp));
+        dispatcher.dispatch(new Req(req), new Resp(resp));
     }
 
     @Override

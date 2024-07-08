@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AnswerDaoImpl implements Dao<AnswerEntity> {
+public class AnswerDaoImpl  {
 
     private final DataSource dataSource;
 
@@ -36,31 +36,5 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
         }
 
         return answers;
-    }
-
-
-    @Override
-    public Optional<AnswerEntity> get(long id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<AnswerEntity> getAll() {
-        return List.of();
-    }
-
-    @Override
-    public void save(AnswerEntity answerEntity) {
-
-    }
-
-    @Override
-    public void update(AnswerEntity answerEntity, String[] params) {
-
-    }
-
-    @Override
-    public void delete(AnswerEntity answerEntity) {
-
     }
 }
