@@ -63,7 +63,7 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
                     if (generatedKeys.next()) {
                         return generatedKeys.getLong(1);
                     }
-N                }
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
