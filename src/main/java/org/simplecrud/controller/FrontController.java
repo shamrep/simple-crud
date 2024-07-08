@@ -52,6 +52,6 @@ public class FrontController extends HttpServlet {
     }
 
     private Handler notFoundHandler() {
-        return r -> Response.notFound();
+        return request -> Response.notFound();
     }
 }

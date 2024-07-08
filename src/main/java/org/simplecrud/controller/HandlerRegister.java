@@ -14,8 +14,6 @@ public class HandlerRegister {
     private final Map<String, Map<String, Handler>> handlerByUrlAndMethod = new ConcurrentHashMap<>();
 
     private HandlerRegister() {
-        get("/questions/test", new GetQuestionHandler()); // TODO: delete, just for test
-
         get("/questions/:id", new GetQuestionHandler());
         post("/questions", new CreateQuestionHandler());
         put("/questions/:id", new UpdateQuestionHandler());
