@@ -7,6 +7,6 @@ public class DeleteQuestionHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-        return null;
+        return Response.noContent();
     }
 }

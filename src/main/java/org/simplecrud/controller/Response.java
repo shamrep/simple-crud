@@ -27,4 +27,8 @@ public class Response {
         return new Response(200, emptyMap(), body);
     }
 
+    public static Response noContent() {
+        return new Response(204, emptyMap(), null);
+    }
+
 }

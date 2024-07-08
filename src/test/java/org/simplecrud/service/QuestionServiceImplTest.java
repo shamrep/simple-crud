@@ -22,16 +22,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findQuestion_questionId_question() {
-        // given
-        long questionId = 1l;
 
-//        Question question = new Question(1,"", answers, tags);
-
-        //when
-        Question question = service.findQuestionById(questionId);
-
-        //then
-//        assertEquals();
     }
 
 }

@@ -8,7 +8,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class Question {
-    private long id;
+
+    private Long id;
     private String content;
     private List<Answer> answers;
     private List<Tag> tags;
