@@ -62,18 +62,47 @@ public class TagDaoImpl implements Dao<TagEntity> {
 
     @Override
     public List<TagEntity> getAll() {
-        return List.of();
+        List<TagEntity> entities = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM tag");
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                entities.add(new TagEntity(resultSet.getLong("id"), resultSet.getString("name")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return entities;
     }
 
     @Override
     public long save(TagEntity tagEntity) {
-        return 0;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tag(name) VALUES(?);", PreparedStatement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, tagEntity.getName());
+
+            long affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getLong(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return -1;
     }
 
     public long save(long questionId, long tagId) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO question_tag VALUES(?,?);",
+                     "INSERT INTO question_tag(question_id, tag_id) VALUES(?,?);",
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, questionId);
             preparedStatement.setLong(2, tagId);
@@ -95,12 +124,14 @@ public class TagDaoImpl implements Dao<TagEntity> {
     }
 
     @Override
-    public void update(TagEntity tagEntity, String[] params) {
+    public boolean update(TagEntity tagEntity) {
 
+        return false;
     }
 
     @Override
-    public void delete(TagEntity tagEntity) {
+    public boolean delete(TagEntity tagEntity) {
 
+        return false;
     }
 }

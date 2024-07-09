@@ -52,7 +52,7 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
     public long save(AnswerEntity answerEntity) {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO answer VALUES(?,?,?);",
+                    connection.prepareStatement("INSERT INTO answer(content, is_correct, question_id) VALUES(?,?,?);",
                             PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, answerEntity.getContent());
@@ -76,12 +76,14 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
     }
 
     @Override
-    public void update(AnswerEntity answerEntity, String[] params) {
+    public boolean update(AnswerEntity answerEntity) {
 
+        return false;
     }
 
     @Override
-    public void delete(AnswerEntity answerEntity) {
+    public boolean delete(AnswerEntity answerEntity) {
 
+        return false;
     }
 }

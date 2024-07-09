@@ -23,14 +23,14 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
     }
 
     public boolean addTag(long questionId, long tagId) {
-        try(var connection = dataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO question_tag VALUES (?, ?);")) {
+        try (var connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO question_tag VALUES (?, ?);")) {
             preparedStatement.setLong(1, questionId);
             preparedStatement.setLong(2, tagId);
 
             int rowAffected = preparedStatement.executeUpdate();
 
-            if(rowAffected == 1) {
+            if (rowAffected == 1) {
                 return true;
             }
 
@@ -93,12 +93,36 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
     }
 
     @Override
-    public void update(QuestionEntity questionEntity, String[] params) {
+    public boolean update(QuestionEntity questionEntity) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("UPDATE question SET content = ?;")) {
+            preparedStatement.setString(1, questionEntity.getContent());
 
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void delete(QuestionEntity questionEntity) {
+    public boolean delete(QuestionEntity questionEntity) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("DELETE FROM question WHERE id = ?;")) {
+            preparedStatement.setLong(1, questionEntity.getId());
 
+            int rowDeleted = preparedStatement.executeUpdate();
+
+            return rowDeleted > 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public boolean deleteById(Long questionId) {
+        return delete(new QuestionEntity(questionId, null));
     }
 }

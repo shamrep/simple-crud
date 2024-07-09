@@ -31,5 +31,10 @@ public class TagDaoImplTest {
         assertEquals(optional.get(), entity);
     }
 
+    @Test
+    void saveTag() {
+        TagEntity entity = new TagEntity(1L, "syntax");
+        tagEntityDao.save(entity);
+    }
 
 }
