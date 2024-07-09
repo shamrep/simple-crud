@@ -35,13 +35,13 @@ public class CreateQuestionHandler implements Handler {
                         null,
                         answerDto.getContent(),
                         answerDto.isCorrect()))
-                .collect(Collectors.toList());
+                .toList();
 
         List<Tag> tags = questionDto.getTags().stream()
                 .map(tagDto -> new Tag(
                         null,
                         tagDto.getName()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new Question(null, questionDto.getContent(), answers, tags);
     }

@@ -13,7 +13,6 @@ import org.simplecrud.service.model.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class QuestionServiceImpl implements QuestionService {
 
@@ -38,11 +37,11 @@ public class QuestionServiceImpl implements QuestionService {
     private Question toQuestion(QuestionEntity questionEntity, List<AnswerEntity> answerEntities, List<TagEntity> tagEntities) {
         List<Answer> answers = answerEntities.stream()
                 .map(entity -> new Answer(entity.getId(), entity.getContent(), entity.isCorrect()))
-                .collect(Collectors.toList());
+                .toList();
 
         List<Tag> tags = tagEntities.stream()
                 .map(tagEntity -> new Tag(tagEntity.getId(), tagEntity.getName()))
-                .collect(Collectors.toList());
+                .toList();
 
         return new Question(questionEntity.getId(), questionEntity.getContent(), answers, tags);
     }
@@ -76,23 +75,23 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionEntity> questionEntities = questionDao.getAll();
         List<Question> questions = new ArrayList<>();
 
-        for(QuestionEntity entity: questionEntities) {
+        for (QuestionEntity entity : questionEntities) {
             List<Answer> answers = answerDao.findAnswersByQuestionId(entity.getId())
                     .stream()
                     .map(answerEntity -> new Answer(
                             answerEntity.getId(),
                             answerEntity.getContent(),
                             answerEntity.isCorrect()))
-                    .collect(Collectors.toList());
+                    .toList();
 
             List<Tag> tags = tagDao.getTagsByQuestionId(entity.getId())
                     .stream()
                     .map(tagEntity -> new Tag(tagEntity.getId(), tagEntity.getName()))
-                    .collect(Collectors.toList());
+                    .toList();
 
             questions.add(new Question(entity.getId(), entity.getContent(), answers, tags));
         }
 
-       return questions;
+        return questions;
     }
 }
