@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,7 +66,19 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
 
     @Override
     public List<QuestionEntity> getAll() {
-        return List.of();
+        List<QuestionEntity> questionEntities = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM question");
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                questionEntities.add(new QuestionEntity(resultSet.getLong("id"), resultSet.getString("content")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return questionEntities;
     }
 
     @Override
