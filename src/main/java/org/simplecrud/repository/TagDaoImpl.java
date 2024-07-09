@@ -125,12 +125,39 @@ public class TagDaoImpl implements Dao<TagEntity> {
 
     @Override
     public boolean update(TagEntity tagEntity) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE tag SET name = ? WHERE id = ?;"
+             )) {
 
+            preparedStatement.setString(1, tagEntity.getName());
+            preparedStatement.setLong(2, tagEntity.getId());
+            long affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return false;
     }
 
     @Override
     public boolean delete(TagEntity tagEntity) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "DELETE FROM tag WHERE id = ?;")) {
+
+            preparedStatement.setLong(1, tagEntity.getId());
+            long affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         return false;
     }
