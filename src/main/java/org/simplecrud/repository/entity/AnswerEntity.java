@@ -9,4 +9,5 @@ public class AnswerEntity {
     private long id;
     private String content;
     private boolean isCorrect;
+    private long questionId;
 }

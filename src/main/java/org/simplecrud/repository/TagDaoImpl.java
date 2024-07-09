@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TagDaoImpl  {
+public class TagDaoImpl implements Dao<TagEntity> {
 
     private final DataSource dataSource;
 
@@ -37,7 +37,6 @@ public class TagDaoImpl  {
         return tagEntities;
     }
 
-
     public Optional<TagEntity> get(long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
@@ -61,5 +60,47 @@ public class TagDaoImpl  {
         return Optional.empty();
     }
 
+    @Override
+    public List<TagEntity> getAll() {
+        return List.of();
+    }
 
+    @Override
+    public long save(TagEntity tagEntity) {
+        return 0;
+    }
+
+    public long save(long questionId, long tagId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO question_tag VALUES(?,?);",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setLong(1, questionId);
+            preparedStatement.setLong(2, tagId);
+
+            long affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getLong("id");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return -1;
+    }
+
+    @Override
+    public void update(TagEntity tagEntity, String[] params) {
+
+    }
+
+    @Override
+    public void delete(TagEntity tagEntity) {
+
+    }
 }

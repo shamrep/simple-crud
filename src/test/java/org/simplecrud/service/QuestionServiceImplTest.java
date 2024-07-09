@@ -21,8 +21,11 @@ public class QuestionServiceImplTest {
     }
 
     @Test
-    public void findQuestion_questionId_question() {
-
+    void saveQuestion() {
+//        List<Answer>
+//        Question question = new Question();
     }
+
+
 
 }

@@ -1,11 +1,11 @@
 package org.simplecrud.service;
 
-import org.simplecrud.repository.entity.AnswerEntity;
-import org.simplecrud.repository.entity.QuestionEntity;
-import org.simplecrud.repository.entity.TagEntity;
 import org.simplecrud.repository.AnswerDaoImpl;
 import org.simplecrud.repository.QuestionDaoImpl;
 import org.simplecrud.repository.TagDaoImpl;
+import org.simplecrud.repository.entity.AnswerEntity;
+import org.simplecrud.repository.entity.QuestionEntity;
+import org.simplecrud.repository.entity.TagEntity;
 import org.simplecrud.service.model.Answer;
 import org.simplecrud.service.model.Question;
 import org.simplecrud.service.model.Tag;
@@ -23,7 +23,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Optional<Question> findQuestionById(long questionId) {
         Optional<QuestionEntity> optionalQuestionEntity = questionDao.get(questionId);
 
-        if(optionalQuestionEntity.isPresent()) {
+        if (optionalQuestionEntity.isPresent()) {
             QuestionEntity questionEntity = optionalQuestionEntity.get();
             List<AnswerEntity> answerEntities = answerDao.findAnswersByQuestionId(questionId);
             List<TagEntity> tagEntities = tagDao.getTagsByQuestionId(questionId);
@@ -31,7 +31,7 @@ public class QuestionServiceImpl implements QuestionService {
             return Optional.of(toQuestion(questionEntity, answerEntities, tagEntities));
         }
 
-       return  Optional.empty();
+        return Optional.empty();
     }
 
     private Question toQuestion(QuestionEntity questionEntity, List<AnswerEntity> answerEntities, List<TagEntity> tagEntities) {
@@ -47,6 +47,25 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         return new Question(questionEntity.getId(), questionEntity.getContent(), answers, tags);
+    }
+
+    public long save(Question question) {
+        long questionId = questionDao.save(new QuestionEntity(-1, question.getContent()));
+
+        if (questionId < 0) {
+            return -1;
+        }
+
+        for (Answer answer : question.getAnswers()) {
+            answerDao.save(new AnswerEntity(-1, answer.getContent(), answer.isCorrect(), questionId));
+        }
+
+        for (Tag tag : question.getTags()) {
+           long tagId =  tagDao.save(new TagEntity(tag.getId(), tag.getName()));
+            tagDao.save(questionId, tagId);
+        }
+
+        return questionId;
     }
 
 }

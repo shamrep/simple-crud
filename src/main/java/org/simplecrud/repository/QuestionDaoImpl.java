@@ -22,6 +22,25 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
         this.dataSource = DataSourceManager.getDataSource();
     }
 
+    public boolean addTag(long questionId, long tagId) {
+        try(var connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO question_tag VALUES (?, ?);")) {
+            preparedStatement.setLong(1, questionId);
+            preparedStatement.setLong(2, tagId);
+
+            int rowAffected = preparedStatement.executeUpdate();
+
+            if(rowAffected == 1) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
+    }
+
     @Override
     public Optional<QuestionEntity> get(long id) {
         QuestionEntity questionEntity = null;
@@ -41,8 +60,6 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
             throw new RuntimeException(e);
         }
 
-        var test = (Object) null;
-
         return Optional.empty();
     }
 
@@ -54,11 +71,14 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
     @Override
     public long save(QuestionEntity questionEntity) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO question (content) VALUES (?);")) {
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("INSERT INTO question (content) VALUES (?);",
+                             PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, questionEntity.getContent());
-            int rowsInserted = preparedStatement.executeUpdate();
 
-            if (rowsInserted > 0) {
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         return generatedKeys.getLong(1);
@@ -68,6 +88,7 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return -1;
     }
 

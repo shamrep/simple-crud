@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AnswerDaoImpl  {
+public class AnswerDaoImpl implements Dao<AnswerEntity> {
 
     private final DataSource dataSource;
 
@@ -28,7 +28,7 @@ public class AnswerDaoImpl  {
             preparedStatement.setLong(1, questionId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    answers.add(new AnswerEntity(resultSet.getLong("id"), resultSet.getString("content"), resultSet.getBoolean("is_correct")));
+                    answers.add(new AnswerEntity(resultSet.getLong("id"), resultSet.getString("content"), resultSet.getBoolean("is_correct"), resultSet.getLong("question_id")));
                 }
             }
         } catch (SQLException e) {
@@ -36,5 +36,52 @@ public class AnswerDaoImpl  {
         }
 
         return answers;
+    }
+
+    @Override
+    public Optional<AnswerEntity> get(long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<AnswerEntity> getAll() {
+        return List.of();
+    }
+
+    @Override
+    public long save(AnswerEntity answerEntity) {
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("INSERT INTO answer VALUES(?,?,?);",
+                            PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            preparedStatement.setString(1, answerEntity.getContent());
+            preparedStatement.setBoolean(2, answerEntity.isCorrect());
+            preparedStatement.setLong(3, answerEntity.getQuestionId());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getLong(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return -1;
+    }
+
+    @Override
+    public void update(AnswerEntity answerEntity, String[] params) {
+
+    }
+
+    @Override
+    public void delete(AnswerEntity answerEntity) {
+
     }
 }
