@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class QuestionEntity {
-    private long id;
+    private Long id;
     private String content;
 }

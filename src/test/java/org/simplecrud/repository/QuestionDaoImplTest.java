@@ -19,7 +19,7 @@ public class QuestionDaoImplTest {
 
     @Test
     void testGetUser() {
-        QuestionEntity questionEntity = new QuestionEntity(1, "What is a correct syntax to output \"Hello World\" in Java?");
+        QuestionEntity questionEntity = new QuestionEntity(1L, "What is a correct syntax to output \"Hello World\" in Java?");
         long generatedId = questionEntityDao.save(questionEntity);
 
 //        assertEquals(2l, generatedId);

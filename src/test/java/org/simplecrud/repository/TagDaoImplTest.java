@@ -21,7 +21,7 @@ public class TagDaoImplTest {
     @Test
     void findTagById_tagId_tag() {
         // given
-        TagEntity entity = new TagEntity(1, "syntax");
+        TagEntity entity = new TagEntity(1L, "syntax");
 
         // when
         Optional<TagEntity> optional = tagEntityDao.get(1);

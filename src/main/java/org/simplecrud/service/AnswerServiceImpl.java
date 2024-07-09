@@ -6,12 +6,10 @@ import org.simplecrud.repository.QuestionDaoImpl;
 import org.simplecrud.repository.entity.AnswerEntity;
 import org.simplecrud.repository.entity.QuestionEntity;
 import org.simplecrud.service.model.Answer;
-import org.simplecrud.service.model.Question;
-import org.simplecrud.service.model.Tag;
 
 public class AnswerServiceImpl implements AnswerService {
-    private Dao<QuestionEntity> questionEntityDao;
-    private Dao<AnswerEntity> answerEntityDao;
+    private final Dao<QuestionEntity> questionEntityDao;
+    private final Dao<AnswerEntity> answerEntityDao;
 
     public AnswerServiceImpl() {
         this.questionEntityDao = new QuestionDaoImpl();
@@ -19,7 +17,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public long save(Question question) {
+    public long save(Answer answer) {
         return 0;
     }
 }

@@ -5,6 +5,12 @@ import org.simplecrud.controller.Response;
 import org.simplecrud.controller.dto.QuestionDto;
 import org.simplecrud.service.QuestionService;
 import org.simplecrud.service.QuestionServiceImpl;
+import org.simplecrud.service.model.Answer;
+import org.simplecrud.service.model.Question;
+import org.simplecrud.service.model.Tag;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateQuestionHandler implements Handler {
 
@@ -18,7 +24,25 @@ public class CreateQuestionHandler implements Handler {
     public Response handle(Request request) {
         QuestionDto questionDto = request.getBody(QuestionDto.class);
 
-        return Response.created("/questions/123");
+        long questionId = questionService.save(toQuestion(questionDto));
+
+        return Response.created("/questions/" + questionId);
     }
 
+    private Question toQuestion(QuestionDto questionDto) {
+        List<Answer> answers = questionDto.getAnswers().stream()
+                .map(answerDto -> new Answer(
+                        null,
+                        answerDto.getContent(),
+                        answerDto.isCorrect()))
+                .collect(Collectors.toList());
+
+        List<Tag> tags = questionDto.getTags().stream()
+                .map(tagDto -> new Tag(
+                        null,
+                        tagDto.getName()))
+                .collect(Collectors.toList());
+
+        return new Question(null, questionDto.getContent(), answers, tags);
+    }
 }

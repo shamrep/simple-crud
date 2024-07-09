@@ -50,14 +50,14 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     public long save(Question question) {
-        long questionId = questionDao.save(new QuestionEntity(-1, question.getContent()));
+        long questionId = questionDao.save(new QuestionEntity(null, question.getContent()));
 
         if (questionId < 0) {
             return -1;
         }
 
         for (Answer answer : question.getAnswers()) {
-            answerDao.save(new AnswerEntity(-1, answer.getContent(), answer.isCorrect(), questionId));
+            answerDao.save(new AnswerEntity(null, answer.getContent(), answer.isCorrect(), questionId));
         }
 
         for (Tag tag : question.getTags()) {

@@ -19,7 +19,7 @@ public class AnswerDaoImplTest {
     @Test
     void findAnswerById_answerId_answer() {
         // given
-        AnswerEntity entity = new AnswerEntity(1, "Console.WriteLine(\"Hello World\");", false);
+        AnswerEntity entity = new AnswerEntity(null, "Console.WriteLine(\"Hello World\");", false, null);
 
         // when
         Optional<AnswerEntity> optional = dao.get(1);

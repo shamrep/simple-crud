@@ -8,7 +8,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 public class TagEntity {
-    private long id;
+    private Long id;
     private String name;
 
     @Override
