@@ -19,12 +19,11 @@ public class GetQuestionHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-//        long questionId = request.getPathParameter("id", Long.class); // TODO: implement
-        Optional<Question> question = questionService.findQuestionById(1);
+        long questionId = request.getPathParameter("id", Long.class); // TODO: implement
+        Optional<Question> question = questionService.findQuestionById(questionId);
 
         return question
                 .map(q -> Response.ok(QuestionDto.of(q)))
                 .orElse(Response.notFound());
     }
-
 }

@@ -53,7 +53,9 @@ public class HandlerRegister {
 
         // TODO: /questions/:id should match with /questions/123
         String path = req.getPathInfo();
-        return Optional.ofNullable(handlerByUrl.get(path));
+        String transformed = path.replaceAll("/\\d+$", "/:id");
+
+        return Optional.ofNullable(handlerByUrl.get(transformed));
     }
 
 }
