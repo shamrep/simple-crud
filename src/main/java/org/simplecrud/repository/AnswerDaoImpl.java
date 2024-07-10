@@ -40,20 +40,46 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
 
     @Override
     public Optional<AnswerEntity> get(long id) {
-        return Optional.empty();
+        AnswerEntity answerEntity = null;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM answer WHERE id = ?;")) {
+            preparedStatement.setLong(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    answerEntity = new AnswerEntity(resultSet.getLong("id"), resultSet.getString("content"), resultSet.getBoolean("is_correct"), resultSet.getLong("question_id"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.ofNullable(answerEntity);
     }
 
     @Override
     public List<AnswerEntity> getAll() {
-        return List.of();
+        List<AnswerEntity> list = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM answer;");
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                list.add(new AnswerEntity(resultSet.getLong("id"), resultSet.getString("content"), resultSet.getBoolean("is_correct"), resultSet.getLong("question_id")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return list;
     }
 
     @Override
     public long save(AnswerEntity answerEntity) {
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("INSERT INTO answer(content, is_correct, question_id) VALUES(?,?,?);",
-                            PreparedStatement.RETURN_GENERATED_KEYS)
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("INSERT INTO answer(content, is_correct, question_id) VALUES(?,?,?);",
+                             PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, answerEntity.getContent());
             preparedStatement.setBoolean(2, answerEntity.isCorrect());
@@ -77,13 +103,33 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
 
     @Override
     public boolean update(AnswerEntity answerEntity) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE answer SET content = ?, is_correct = ?, question_id = ?;")) {
 
-        return false;
+            preparedStatement.setString(1, answerEntity.getContent());
+            preparedStatement.setBoolean(2, answerEntity.isCorrect());
+            preparedStatement.setLong(3, answerEntity.getQuestionId());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean delete(AnswerEntity answerEntity) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("DELETE FROM answer WHERE id = ?;")) {
+            preparedStatement.setLong(1, answerEntity.getId());
 
-        return false;
+            int rowDeleted = preparedStatement.executeUpdate();
+
+            return rowDeleted > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
