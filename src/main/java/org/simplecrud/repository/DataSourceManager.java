@@ -10,7 +10,7 @@ import java.util.Properties;
 public class DataSourceManager {
 
     private static final PGSimpleDataSource dataSource = new PGSimpleDataSource();
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
     static {
         try (FileInputStream fis = new FileInputStream("src/main/resources/application.properties")) {

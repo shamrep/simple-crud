@@ -10,7 +10,6 @@ import org.simplecrud.service.model.Question;
 import org.simplecrud.service.model.Tag;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateQuestionHandler implements Handler {
 
