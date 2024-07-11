@@ -9,7 +9,7 @@ import org.simplecrud.service.model.Tag;
 
 import java.util.Optional;
 
-public class GetTagHandler implements Handler {
+public class GetTagHandler implements TagHandler {
     private final TagService tagService = new TagServiceImpl();
 
     @Override

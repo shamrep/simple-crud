@@ -1,5 +1,11 @@
 package org.simplecrud.controller.handler;
 
-public interface TagHandler extends Handler {
+import org.simplecrud.controller.dto.TagDto;
+import org.simplecrud.repository.entity.TagEntity;
+import org.simplecrud.service.model.Tag;
 
+public interface TagHandler extends Handler {
+    default Tag toTag(TagDto tagDto) {
+        return new Tag(tagDto.getId(), tagDto.getName());
+    }
 }

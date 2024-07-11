@@ -31,4 +31,12 @@ public class Response {
         return new Response(204, emptyMap(), null);
     }
 
+    public static Response  internalServerError() {
+        return new Response(500, emptyMap(), null);
+    }
+
+    public static Response dataAlreadyExists() {
+        return new Response(409, emptyMap(), null);
+    }
+
 }

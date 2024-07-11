@@ -85,18 +85,20 @@ public class TagDaoImpl implements Dao<TagEntity> {
 
             long affectedRows = preparedStatement.executeUpdate();
 
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getLong(1);
-                    }
+            if (affectedRows == 0) {
+                throw new RuntimeException("Could not create tag with name = " + tagEntity.getName());
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getLong(1);
+                } else {
+                    throw new RuntimeException("Could not create tag with name = " + tagEntity.getName());
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return -1;
     }
 
     public long save(long questionId, long tagId) {

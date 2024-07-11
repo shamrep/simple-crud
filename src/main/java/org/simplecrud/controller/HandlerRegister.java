@@ -19,6 +19,9 @@ public class HandlerRegister {
         put("/questions/:id", new UpdateQuestionHandler());
         delete("/questions/:id", new DeleteQuestionHandler());
         get("/tags/:id", new GetTagHandler());
+        post("/tags", new CreateTagHandler());
+        delete("/tags/:id", new DeleteTagHandler());
+        put("/tags/:id", new UpdateTagHandler());
     }
 
     public static HandlerRegister getInstance() {
