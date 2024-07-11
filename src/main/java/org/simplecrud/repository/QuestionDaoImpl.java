@@ -23,23 +23,30 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
         this.dataSource = DataSourceManager.getDataSource();
     }
 
-    public boolean addTag(long questionId, long tagId) {
-        try (var connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO question_tag VALUES (?, ?);")) {
+    public long addTag(long questionId, long tagId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO question_tag(question_id, tag_id) VALUES(?,?);",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, questionId);
             preparedStatement.setLong(2, tagId);
 
-            int rowAffected = preparedStatement.executeUpdate();
+            long affectedRows = preparedStatement.executeUpdate();
 
-            if (rowAffected == 1) {
-                return true;
+            if (affectedRows == 0) {
+                throw new RuntimeException("Could not add tag with id = " + tagId + " to a question with id = " + questionId);
             }
 
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getLong("id");
+                } else {
+                    throw new RuntimeException("Could not add tag with id = " + tagId + " to a question with id = " + questionId);
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return false;
     }
 
     @Override
@@ -91,18 +98,20 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
 
             int affectedRows = preparedStatement.executeUpdate();
 
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getLong(1);
-                    }
+            if (affectedRows == 0) {
+                throw new RuntimeException("Could not save question in database!");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getLong(1);
+                } else {
+                    throw new RuntimeException("Could not save question in database!");
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return -1;
     }
 
     @Override
@@ -129,6 +138,10 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
 
             int rowDeleted = preparedStatement.executeUpdate();
 
+            if (rowDeleted == 0) {
+                throw new RuntimeException("Could not DELETE FROM question WHERE id = " + questionEntity.getId());
+            }
+
             return rowDeleted > 0;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -136,6 +149,20 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
     }
 
     public boolean deleteById(Long questionId) {
-        return delete(new QuestionEntity(questionId, null));
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("DELETE FROM question WHERE id = ?;")) {
+            preparedStatement.setLong(1, questionId);
+
+            int rowDeleted = preparedStatement.executeUpdate();
+
+            if (rowDeleted == 0) {
+                throw new RuntimeException("Could not DELETE FROM question WHERE id = " + questionId);
+            }
+
+            return rowDeleted > 0;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

@@ -31,8 +31,8 @@ public class Response {
         return new Response(204, emptyMap(), null);
     }
 
-    public static Response  internalServerError() {
-        return new Response(500, emptyMap(), null);
+    public static Response  internalServerError(Object body) {
+        return new Response(500, emptyMap(), body);
     }
 
     public static Response dataAlreadyExists() {

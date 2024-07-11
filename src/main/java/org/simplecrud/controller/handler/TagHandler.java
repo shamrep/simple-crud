@@ -1,7 +1,6 @@
 package org.simplecrud.controller.handler;
 
 import org.simplecrud.controller.dto.TagDto;
-import org.simplecrud.repository.entity.TagEntity;
 import org.simplecrud.service.model.Tag;
 
 public interface TagHandler extends Handler {

@@ -101,30 +101,6 @@ public class TagDaoImpl implements Dao<TagEntity> {
         }
     }
 
-    public long save(long questionId, long tagId) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO question_tag(question_id, tag_id) VALUES(?,?);",
-                     PreparedStatement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, questionId);
-            preparedStatement.setLong(2, tagId);
-
-            long affectedRows = preparedStatement.executeUpdate();
-
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getLong("id");
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return -1;
-    }
-
     @Override
     public boolean update(TagEntity tagEntity) {
         try (Connection connection = dataSource.getConnection();
@@ -136,13 +112,14 @@ public class TagDaoImpl implements Dao<TagEntity> {
             preparedStatement.setLong(2, tagEntity.getId());
             long affectedRows = preparedStatement.executeUpdate();
 
-            if (affectedRows > 0) {
-                return true;
+            if (affectedRows < 0) {
+                throw new RuntimeException("Could not update tag with id = " + tagEntity.getId());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return false;
+
+        return true;
     }
 
     @Override
@@ -163,4 +140,23 @@ public class TagDaoImpl implements Dao<TagEntity> {
 
         return false;
     }
+
+    public boolean delete(long tagEntityId) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "DELETE FROM tag WHERE id = ?;")) {
+
+            preparedStatement.setLong(1, tagEntityId);
+            long affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new RuntimeException("Tag with id = " + tagEntityId + " hasn't been deleted.");
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
+

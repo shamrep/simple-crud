@@ -9,4 +9,5 @@ public interface Service <T> {
     long save(T t);
     boolean update(T t);
     boolean delete(T t);
+    boolean delete(long id);
 }

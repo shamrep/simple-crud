@@ -3,7 +3,10 @@ package org.simplecrud.repository;
 import org.simplecrud.repository.entity.AnswerEntity;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,20 +87,20 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
 
             int affectedRows = preparedStatement.executeUpdate();
 
-            if (affectedRows > 0) {
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getLong(1);
-                    }
+            if (affectedRows == 0) {
+                throw new RuntimeException("Could not save answer with id = " + answerEntity.getId());
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getLong(1);
+                } else {
+                    throw new RuntimeException("Could not save answer with id = " + answerEntity.getId());
                 }
-            } else {
-                throw new SQLDataException();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return -1;
     }
 
     @Override
@@ -111,7 +114,11 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
 
             int rowsUpdated = preparedStatement.executeUpdate();
 
-            return rowsUpdated > 0;
+            if(rowsUpdated == 0 ) {
+                throw new RuntimeException("Could not update answer with id = " + answerEntity.getId());
+            }
+
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -124,9 +131,13 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
                      connection.prepareStatement("DELETE FROM answer WHERE id = ?;")) {
             preparedStatement.setLong(1, answerEntity.getId());
 
-            int rowDeleted = preparedStatement.executeUpdate();
+            int rowsDeleted = preparedStatement.executeUpdate();
 
-            return rowDeleted > 0;
+            if(rowsDeleted == 0 ) {
+                throw new RuntimeException("Could not delete answer with id = " + answerEntity.getId());
+            }
+
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

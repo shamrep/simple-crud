@@ -7,7 +7,7 @@ import org.simplecrud.service.model.Tag;
 
 import java.util.Optional;
 
-public class TagServiceImpl implements TagService {
+public class TagServiceImpl implements Service<Tag> {
     private final TagDaoImpl tagDao = new TagDaoImpl();
 
     @Override
@@ -43,5 +43,10 @@ public class TagServiceImpl implements TagService {
 
     private TagEntity toTagEntity(Tag tag) {
         return new TagEntity(tag.getId(), tag.getName());
+    }
+
+    @Override
+    public boolean delete(long tagId) {
+        return tagDao.delete(tagId);
     }
 }
