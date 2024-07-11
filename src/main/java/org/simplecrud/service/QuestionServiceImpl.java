@@ -56,7 +56,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.getAnswers().stream()
                 .map(answer -> new AnswerEntity(null, answer.getContent(), answer.isCorrect(), questionId))
                 .forEach(answerEntity -> answerDao.save(answerEntity));
-
+        question.getTags().stream().map(tag -> new TagEntity(tag.getId(),tag.getName())).forEach(tagEntity -> tagDao.save(tagEntity));
         question.getTags().stream()
                 .forEach(tag -> tagDao.save(questionId, tag.getId()));
 
@@ -69,6 +69,11 @@ public class QuestionServiceImpl implements QuestionService {
 
     public boolean delete(Question question) {
         return questionDao.deleteById(question.getId());
+    }
+
+    @Override
+    public boolean deleteById(Long questionId) {
+        return questionDao.deleteById(questionId);
     }
 
     public List<Question> getAll() {

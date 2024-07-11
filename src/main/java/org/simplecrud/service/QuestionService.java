@@ -9,4 +9,5 @@ public interface QuestionService {
     Optional<Question> findQuestionById(long questionId);
     boolean update(Question question);
     boolean delete(Question question);
+    boolean deleteById(Long questionId);
 }

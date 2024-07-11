@@ -3,10 +3,7 @@ package org.simplecrud.repository;
 import org.simplecrud.repository.entity.AnswerEntity;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +90,8 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
                         return generatedKeys.getLong(1);
                     }
                 }
+            } else {
+                throw new SQLDataException();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

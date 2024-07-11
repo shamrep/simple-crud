@@ -21,33 +21,17 @@ public class Request {
 
     public <T> T getPathParameter(String parameterName, Class<T> type) {
         String path = request.getPathInfo();
+        String[] parts = path.split("/");
 
-        if (type.equals(Integer.class)) {
-            String[] parts = path.split("/");
-            if (parts.length >= 3) { // Assuming path format "/resource/id"
-                String idStr = parts[2];
+        if (parts.length >= 3) { // Assuming path format "/resource/id"
+            String idStr = parts[2];
+
+            if (type.equals(Integer.class)) {
                 return type.cast(Integer.parseInt(idStr));
-            } else {
-                throw new IllegalArgumentException("Invalid path format");
-            }
-        }
-
-        // Example: Extracting a Long parameter
-        else if (type.equals(Long.class)) {
-            String[] parts = path.split("/");
-            if (parts.length >= 3) { // Assuming path format "/resource/id"
-                String idStr = parts[2];
+            } else if (type.equals(Long.class)) {
                 return type.cast(Long.parseLong(idStr));
-            } else {
-                throw new IllegalArgumentException("Invalid path format");
-            }
-        }
-
-        // Example: Extracting a String parameter
-        else if (type.equals(String.class)) {
-            String[] parts = path.split("/");
-            if (parts.length >= 3) { // Assuming path format "/resource/id"
-                return type.cast(parts[2]);
+            } else if (type.equals(String.class)) {
+                return type.cast(idStr);
             } else {
                 throw new IllegalArgumentException("Invalid path format");
             }

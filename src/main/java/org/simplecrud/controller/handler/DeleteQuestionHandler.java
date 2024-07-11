@@ -16,7 +16,8 @@ public class DeleteQuestionHandler implements QuestionHandler {
     @Override
     public Response handle(Request request) {
 
-        questionService.delete(toQuestion(request.getBody(QuestionDto.class)));
+        long questionId = request.getPathParameter("id", Long.class);
+        questionService.deleteById(questionId);
 
         return Response.noContent();
     }
