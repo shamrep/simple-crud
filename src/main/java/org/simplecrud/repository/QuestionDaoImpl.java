@@ -115,7 +115,7 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
     }
 
     @Override
-    public boolean update(QuestionEntity questionEntity) {
+    public void update(QuestionEntity questionEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("UPDATE question SET content = ?;")) {
@@ -123,14 +123,16 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
 
             int rowsUpdated = preparedStatement.executeUpdate();
 
-            return rowsUpdated > 0;
+            if (rowsUpdated == 0) {
+                throw new RuntimeException("Couldn't update question with id = " + questionEntity.getId());
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public boolean delete(QuestionEntity questionEntity) {
+    public void delete(QuestionEntity questionEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM question WHERE id = ?;")) {
@@ -141,8 +143,6 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
             if (rowDeleted == 0) {
                 throw new RuntimeException("Could not DELETE FROM question WHERE id = " + questionEntity.getId());
             }
-
-            return rowDeleted > 0;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }

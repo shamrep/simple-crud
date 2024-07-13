@@ -78,7 +78,7 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
     public long save(AnswerEntity answerEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement("INSERT INTO answer(content, is_correct, question_id) VALUES(?,?,?);",
+                     connection.prepareStatement("INSERT INTO answer(content, is_correct, question_id) VALUES(?,?, ?);",
                              PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, answerEntity.getContent());
@@ -104,7 +104,7 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
     }
 
     @Override
-    public boolean update(AnswerEntity answerEntity) {
+    public void update(AnswerEntity answerEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("UPDATE answer SET content = ?, is_correct = ?, question_id = ?;")) {
 
@@ -114,18 +114,16 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
 
             int rowsUpdated = preparedStatement.executeUpdate();
 
-            if(rowsUpdated == 0 ) {
+            if (rowsUpdated == 0) {
                 throw new RuntimeException("Could not update answer with id = " + answerEntity.getId());
             }
-
-            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public boolean delete(AnswerEntity answerEntity) {
+    public void delete(AnswerEntity answerEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM answer WHERE id = ?;")) {
@@ -133,11 +131,26 @@ public class AnswerDaoImpl implements Dao<AnswerEntity> {
 
             int rowsDeleted = preparedStatement.executeUpdate();
 
-            if(rowsDeleted == 0 ) {
+            if (rowsDeleted == 0) {
                 throw new RuntimeException("Could not delete answer with id = " + answerEntity.getId());
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-            return true;
+    @Override
+    public void delete(long id) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("DELETE FROM answer WHERE id = ?;")) {
+            preparedStatement.setLong(1, id);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted == 0) {
+                throw new RuntimeException("Could not delete answer with id = " + id);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

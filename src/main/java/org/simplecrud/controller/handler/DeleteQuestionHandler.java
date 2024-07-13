@@ -2,12 +2,12 @@ package org.simplecrud.controller.handler;
 
 import org.simplecrud.controller.Request;
 import org.simplecrud.controller.Response;
-import org.simplecrud.controller.dto.QuestionDto;
-import org.simplecrud.service.QuestionService;
 import org.simplecrud.service.QuestionServiceImpl;
+import org.simplecrud.service.Service;
+import org.simplecrud.service.model.Question;
 
 public class DeleteQuestionHandler implements QuestionHandler {
-    private final QuestionService questionService;
+    private final Service<Question> questionService;
 
     public DeleteQuestionHandler() {
         questionService = new QuestionServiceImpl();
@@ -16,9 +16,14 @@ public class DeleteQuestionHandler implements QuestionHandler {
     @Override
     public Response handle(Request request) {
 
-        long questionId = request.getPathParameter("id", Long.class);
-        questionService.deleteById(questionId);
+        try {
+            long questionId = request.getPathParameter("id", Long.class);
+            questionService.get(questionId);
+            return Response.noContent();
+        } catch (RuntimeException e) {
+            return Response.internalServerError(e);
+        }
 
-        return Response.noContent();
+
     }
 }

@@ -15,12 +15,11 @@ public class UpdateTagHandler implements TagHandler {
     public Response handle(Request request) {
         Tag tag = toTag(request.getBody(TagDto.class));
 
-        boolean updated = tagService.update(tag);
-
-        if (updated) {
+        try{
+            tagService.update(tag);
             return tagService.get(tag.getId()).map(t -> Response.ok(TagDto.of(t))).get();
+        } catch (RuntimeException e) {
+            return Response.notFound();
         }
-
-        return Response.notFound();
     }
 }

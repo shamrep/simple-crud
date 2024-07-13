@@ -2,7 +2,6 @@ package org.simplecrud.service;
 
 import org.simplecrud.repository.TagDaoImpl;
 import org.simplecrud.repository.entity.TagEntity;
-import org.simplecrud.service.model.Question;
 import org.simplecrud.service.model.Tag;
 
 import java.util.Optional;
@@ -18,7 +17,6 @@ public class TagServiceImpl implements Service<Tag> {
             return Optional.of(toTag(optionalTagEntity.get()));
         }
 
-        //or throw Exception?
         return  Optional.empty();
     }
 
@@ -28,13 +26,13 @@ public class TagServiceImpl implements Service<Tag> {
     }
 
     @Override
-    public boolean update(Tag tag) {
-        return tagDao.update(toTagEntity(tag));
+    public void update(Tag tag) {
+       tagDao.update(toTagEntity(tag));
     }
 
     @Override
-    public boolean delete(Tag tag) {
-        return tagDao.delete(toTagEntity(tag));
+    public void delete(Tag tag) {
+        tagDao.delete(toTagEntity(tag));
     }
 
     private Tag toTag(TagEntity tagEntity) {
@@ -46,7 +44,7 @@ public class TagServiceImpl implements Service<Tag> {
     }
 
     @Override
-    public boolean delete(long tagId) {
-        return tagDao.delete(tagId);
+    public void delete(long tagId) {
+       tagDao.delete(tagId);
     }
 }

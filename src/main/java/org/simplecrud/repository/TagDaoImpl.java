@@ -102,7 +102,7 @@ public class TagDaoImpl implements Dao<TagEntity> {
     }
 
     @Override
-    public boolean update(TagEntity tagEntity) {
+    public void update(TagEntity tagEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE tag SET name = ? WHERE id = ?;"
@@ -112,18 +112,16 @@ public class TagDaoImpl implements Dao<TagEntity> {
             preparedStatement.setLong(2, tagEntity.getId());
             long affectedRows = preparedStatement.executeUpdate();
 
-            if (affectedRows < 0) {
+            if (affectedRows == 0) {
                 throw new RuntimeException("Could not update tag with id = " + tagEntity.getId());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return true;
     }
 
     @Override
-    public boolean delete(TagEntity tagEntity) {
+    public void delete(TagEntity tagEntity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "DELETE FROM tag WHERE id = ?;")) {
@@ -131,17 +129,15 @@ public class TagDaoImpl implements Dao<TagEntity> {
             preparedStatement.setLong(1, tagEntity.getId());
             long affectedRows = preparedStatement.executeUpdate();
 
-            if (affectedRows > 0) {
-                return true;
+            if (affectedRows == 0) {
+                throw new RuntimeException("Tag with id = " + tagEntity.getId() + " hasn't been deleted.");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return false;
     }
 
-    public boolean delete(long tagEntityId) {
+    public void delete(long tagEntityId) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "DELETE FROM tag WHERE id = ?;")) {
@@ -152,11 +148,9 @@ public class TagDaoImpl implements Dao<TagEntity> {
             if (affectedRows == 0) {
                 throw new RuntimeException("Tag with id = " + tagEntityId + " hasn't been deleted.");
             }
-            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
 

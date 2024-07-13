@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class QuestionServiceImpl implements QuestionService {
+public class QuestionServiceImpl implements Service<Question> {
 
     private final AnswerDaoImpl answerDao = new AnswerDaoImpl();
     private final QuestionDaoImpl questionDao = new QuestionDaoImpl();
     private final TagDaoImpl tagDao = new TagDaoImpl();
 
-    public Optional<Question> findQuestionById(long questionId) {
+    public Optional<Question> get(long questionId) {
         Optional<QuestionEntity> optionalQuestionEntity = questionDao.get(questionId);
 
         if (optionalQuestionEntity.isPresent()) {
@@ -49,29 +49,29 @@ public class QuestionServiceImpl implements QuestionService {
     public long save(Question question) {
         long questionId = questionDao.save(new QuestionEntity(null, question.getContent()));
 
-        if (questionId < 0) {
-            return -1;
-        }
-
         question.getAnswers().stream()
                 .map(answer -> new AnswerEntity(null, answer.getContent(), answer.isCorrect(), questionId))
                 .forEach(answerEntity -> answerDao.save(answerEntity));
         question.getTags().stream().map(tag -> new TagEntity(tag.getId(),tag.getName())).forEach(tagEntity -> tagDao.save(tagEntity));
         question.getTags().stream()
-                .forEach(tag -> tagDao.save(questionId, tag.getId()));
+                .forEach(tag -> questionDao.addTag(questionId, tag.getId()));
 
         return questionId;
     }
 
-    public boolean update(Question question) {
-        return questionDao.update(new QuestionEntity(null, question.getContent()));
+    public void update(Question question) {
+       questionDao.update(new QuestionEntity(null, question.getContent()));
     }
 
-    public boolean delete(Question question) {
-        return questionDao.deleteById(question.getId());
+    public void delete(Question question) {
+        questionDao.deleteById(question.getId());
     }
 
     @Override
+    public void delete(long id) {
+
+    }
+
     public boolean deleteById(Long questionId) {
         return questionDao.deleteById(questionId);
     }

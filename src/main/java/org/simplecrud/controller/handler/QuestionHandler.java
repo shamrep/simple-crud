@@ -13,7 +13,8 @@ public interface QuestionHandler extends Handler {
                 .map(answerDto -> new Answer(
                         answerDto.getId(),
                         answerDto.getContent(),
-                        answerDto.isCorrect()))
+                        answerDto.isCorrect(),
+                        answerDto.getQuestionId()))
                 .toList();
 
         List<Tag> tags = questionDto.getTags().stream()
