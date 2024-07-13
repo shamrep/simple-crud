@@ -8,12 +8,12 @@ import org.simplecrud.service.model.Tag;
 @Getter
 public class TagDto {
 
-    private final Long id;
+    private final long id;
     private final String name;
 
     @JsonCreator
     public TagDto(
-            @JsonProperty("id") Long id,
+            @JsonProperty("id") long id,
             @JsonProperty("name") String name) {
 
         this.id = id;
@@ -22,6 +22,10 @@ public class TagDto {
 
     public static TagDto of(Tag tag) {
         return new TagDto(tag.getId(), tag.getName());
+    }
+
+    public Tag toTag() {
+        return new Tag(id, name);
     }
 
 }

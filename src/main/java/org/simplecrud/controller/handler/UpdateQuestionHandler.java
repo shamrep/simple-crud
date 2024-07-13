@@ -5,6 +5,9 @@ import org.simplecrud.controller.Response;
 import org.simplecrud.controller.dto.QuestionDto;
 import org.simplecrud.service.QuestionService;
 import org.simplecrud.service.impl.QuestionServiceImpl;
+import org.simplecrud.service.model.Question;
+
+import java.util.Optional;
 
 public class UpdateQuestionHandler implements Handler {
     private final QuestionService questionService;
@@ -15,15 +18,15 @@ public class UpdateQuestionHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
+        long questionId = request.getPathParameter("id", Long.class);
         QuestionDto questionDto = request.getBody(QuestionDto.class);
 
-        try {
-            questionService.update(questionDto.toQuestion());
-        } catch (RuntimeException e) {
+        Optional<Question> question = questionService.get(questionId);
+        if (question.isEmpty()) {
             return Response.notFound();
-
         }
 
+        questionService.update(questionDto.toQuestion());
         return Response.noContent();
     }
 }

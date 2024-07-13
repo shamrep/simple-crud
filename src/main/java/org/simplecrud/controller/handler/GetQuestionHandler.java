@@ -19,7 +19,7 @@ public class GetQuestionHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-        long questionId = request.getPathParameter("id", Long.class); // TODO: implement
+        long questionId = request.getPathParameter("id", Long.class);
         Optional<Question> question = questionService.get(questionId);
 
         return question

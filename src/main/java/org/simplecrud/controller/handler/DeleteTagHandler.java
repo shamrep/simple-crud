@@ -5,18 +5,15 @@ import org.simplecrud.controller.Response;
 import org.simplecrud.service.TagService;
 import org.simplecrud.service.impl.TagServiceImpl;
 
-public class DeleteTagHandler implements TagHandler {
+public class DeleteTagHandler implements Handler {
+
     private final TagService tagService = new TagServiceImpl();
 
     @Override
     public Response handle(Request request) {
         long tagId = request.getPathParameter("id", Long.class);
+        tagService.delete(tagId);
 
-        try {
-            tagService.delete(tagId);
-            return Response.noContent();
-        } catch (RuntimeException e) {
-            return Response.internalServerError(e);
-        }
+        return Response.noContent();
     }
 }

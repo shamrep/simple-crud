@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.simplecrud.controller.handler.Handler;
+import org.simplecrud.service.validator.ValidationException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -39,11 +40,21 @@ public class FrontController extends HttpServlet {
                 .orElseGet(this::notFoundHandler);
 
         Request request = new Request(req);
-        Response response = handler.handle(request);
+        Response response = handle(handler, request);
 
         res.setStatus(response.getStatusCode());
         res.setContentType("application/json");
         writeBodyToOutputStream(response.getBody(), res.getOutputStream());
+    }
+
+    private Response handle(Handler handler, Request request) {
+        try {
+            return handler.handle(request);
+        } catch (ValidationException e) {
+            return Response.badRequest(e.getErrors());
+        } catch (Exception e) {
+            return Response.internalServerError();
+        }
     }
 
     private void writeBodyToOutputStream(Object body, OutputStream os) throws IOException {

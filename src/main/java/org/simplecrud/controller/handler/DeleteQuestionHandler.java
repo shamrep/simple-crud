@@ -6,6 +6,7 @@ import org.simplecrud.service.QuestionService;
 import org.simplecrud.service.impl.QuestionServiceImpl;
 
 public class DeleteQuestionHandler implements Handler {
+
     private final QuestionService questionService;
 
     public DeleteQuestionHandler() {
@@ -14,13 +15,9 @@ public class DeleteQuestionHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
+        long questionId = request.getPathParameter("id", Long.class);
+        questionService.delete(questionId);
 
-        try {
-            long questionId = request.getPathParameter("id", Long.class);
-            questionService.delete(questionId);
-            return Response.noContent();
-        } catch (RuntimeException e) {
-            return Response.internalServerError(e);
-        }
+        return Response.noContent();
     }
 }

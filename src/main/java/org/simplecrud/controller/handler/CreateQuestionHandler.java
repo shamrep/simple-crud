@@ -18,11 +18,7 @@ public class CreateQuestionHandler implements Handler {
     public Response handle(Request request) {
         QuestionDto questionDto = request.getBody(QuestionDto.class);
 
-        try {
-            long questionId = questionService.save(questionDto.toQuestion());
-            return Response.created("/questions/" + questionId);
-        } catch (RuntimeException e) {
-            return Response.internalServerError(e);
-        }
+        long questionId = questionService.save(questionDto.toQuestion());
+        return Response.created("/questions/" + questionId);
     }
 }

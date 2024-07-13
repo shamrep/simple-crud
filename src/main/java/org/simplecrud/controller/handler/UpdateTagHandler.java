@@ -7,19 +7,23 @@ import org.simplecrud.service.TagService;
 import org.simplecrud.service.impl.TagServiceImpl;
 import org.simplecrud.service.model.Tag;
 
-public class UpdateTagHandler implements TagHandler {
+import java.util.Optional;
+
+public class UpdateTagHandler implements Handler {
 
     private final TagService tagService = new TagServiceImpl();
 
     @Override
     public Response handle(Request request) {
-        Tag tag = toTag(request.getBody(TagDto.class));
+        long tagId = request.getPathParameter("id", Long.class);
+        TagDto tagDto = request.getBody(TagDto.class);
 
-        try{
-            tagService.update(tag);
-            return tagService.get(tag.getId()).map(t -> Response.ok(TagDto.of(t))).get();
-        } catch (RuntimeException e) {
+        Optional<Tag> tag = tagService.get(tagId);
+        if (tag.isEmpty()) {
             return Response.notFound();
         }
+
+        tagService.update(tagDto.toTag());
+        return Response.noContent();
     }
 }

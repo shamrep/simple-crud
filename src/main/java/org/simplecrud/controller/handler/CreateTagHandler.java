@@ -6,7 +6,7 @@ import org.simplecrud.controller.dto.TagDto;
 import org.simplecrud.service.TagService;
 import org.simplecrud.service.impl.TagServiceImpl;
 
-public class CreateTagHandler implements TagHandler {
+public class CreateTagHandler implements Handler {
 
     private final TagService tagService = new TagServiceImpl();
 
@@ -14,12 +14,7 @@ public class CreateTagHandler implements TagHandler {
     public Response handle(Request request) {
         TagDto tagDto = request.getBody(TagDto.class);
 
-        try {
-            long tagId = tagService.save(toTag(tagDto));
-
-            return Response.created("/tags/" + tagId);
-        } catch (RuntimeException e) {
-            return Response.internalServerError(e);
-        }
+        long tagId = tagService.save(tagDto.toTag());
+        return Response.created("/tags/" + tagId);
     }
 }
