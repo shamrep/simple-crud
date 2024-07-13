@@ -9,8 +9,6 @@ public interface AnswerDao {
 
     Optional<AnswerEntity> get(long answerId);
 
-    List<AnswerEntity> getAll();
-
     List<AnswerEntity> getAnswersByQuestionId(long questionId);
 
     long save(AnswerEntity answerEntity);

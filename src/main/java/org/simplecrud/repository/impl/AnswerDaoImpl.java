@@ -1,7 +1,7 @@
 package org.simplecrud.repository.impl;
 
 import org.simplecrud.repository.AnswerDao;
-import org.simplecrud.repository.DaoException;
+import org.simplecrud.repository.exception.DaoException;
 import org.simplecrud.repository.DataSourceManager;
 import org.simplecrud.repository.entity.AnswerEntity;
 
@@ -65,21 +65,6 @@ public class AnswerDaoImpl implements AnswerDao {
             }
         } catch (SQLException e) {
             throw new DaoException("Couldn't get answer by id = " + answerId, e);
-        }
-    }
-
-    @Override
-    public List<AnswerEntity> getAll() {
-        String sql = "SELECT * FROM answer;";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            return toAnswerEntities(rs);
-
-        } catch (SQLException e) {
-            throw new DaoException("Couldn't get all answers", e);
         }
     }
 

@@ -6,8 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class AnswerEntity {
+
     private Long id;
     private String content;
-    private boolean isCorrect;
-    private Long questionId;
+    private boolean correct;
+    private long questionId;
 }

@@ -1,6 +1,8 @@
 package org.simplecrud.service.impl;
 
-import org.simplecrud.repository.*;
+import org.simplecrud.repository.AnswerDao;
+import org.simplecrud.repository.QuestionDao;
+import org.simplecrud.repository.TagDao;
 import org.simplecrud.repository.entity.AnswerEntity;
 import org.simplecrud.repository.entity.QuestionEntity;
 import org.simplecrud.repository.entity.TagEntity;
@@ -82,10 +84,10 @@ public class QuestionServiceImpl implements QuestionService {
         List<Question> questions = new ArrayList<>();
 
         for (QuestionEntity entity : questionDao.getAll()) {
-            List<Answer> answers = answerDao.getAnswersByQuestionId(entity.getId()).stream().map(Answer::of).toList();
-            List<Tag> tags = tagDao.getTagsByQuestionId(entity.getId()).stream().map(Tag::of).toList();
+            List<AnswerEntity> answerEntities = answerDao.getAnswersByQuestionId(entity.getId());
+            List<TagEntity> tagEntities = tagDao.getTagsByQuestionId(entity.getId());
 
-            Question question = new Question(entity.getId(), entity.getContent(), answers, tags);
+            Question question = toQuestion(entity, answerEntities, tagEntities);
             questions.add(question);
         }
 

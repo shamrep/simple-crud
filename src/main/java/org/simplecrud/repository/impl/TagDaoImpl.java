@@ -1,6 +1,6 @@
 package org.simplecrud.repository.impl;
 
-import org.simplecrud.repository.DaoException;
+import org.simplecrud.repository.exception.DaoException;
 import org.simplecrud.repository.DataSourceManager;
 import org.simplecrud.repository.TagDao;
 import org.simplecrud.repository.entity.TagEntity;

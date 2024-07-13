@@ -11,11 +11,11 @@ public interface QuestionDao {
 
     List<QuestionEntity> getAll();
 
-    long save(QuestionEntity question);
+    long save(QuestionEntity questionEntity);
 
-    void update(QuestionEntity question);
+    void update(QuestionEntity questionEntity);
 
     void delete(long questionId);
 
-    long addTag(long questionId, long tagId);
+    void addTag(long questionId, long tagId);
 }

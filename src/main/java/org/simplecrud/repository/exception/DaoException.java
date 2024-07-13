@@ -1,4 +1,4 @@
-package org.simplecrud.repository;
+package org.simplecrud.repository.exception;
 
 public class DaoException extends RuntimeException {
 

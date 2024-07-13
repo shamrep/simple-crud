@@ -1,6 +1,6 @@
 package org.simplecrud.repository.impl;
 
-import org.simplecrud.repository.DaoException;
+import org.simplecrud.repository.exception.DaoException;
 import org.simplecrud.repository.DataSourceManager;
 import org.simplecrud.repository.QuestionDao;
 import org.simplecrud.repository.entity.QuestionEntity;
@@ -29,7 +29,7 @@ public class QuestionDaoImpl implements QuestionDao {
     }
 
     @Override
-    public long addTag(long questionId, long tagId) {
+    public void addTag(long questionId, long tagId) {
         String sql = "INSERT INTO question_tag(question_id, tag_id) VALUES(?,?);";
 
         try (Connection connection = dataSource.getConnection();
@@ -40,18 +40,10 @@ public class QuestionDaoImpl implements QuestionDao {
 
             long affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
-                throw new DaoException("Could not add tag = " + tagId + " to a question = " + questionId);
-            }
-
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (!generatedKeys.next()) {
-                    throw new DaoException("Could not add tag = " + tagId + " to a question = " + questionId);
-                }
-
-                return generatedKeys.getLong("id");
+                throw new DaoException("Could not add tag = " + tagId + " to question = " + questionId);
             }
         } catch (SQLException e) {
-            throw new DaoException("Could not add tag = " + tagId + " to a question = " + questionId, e);
+            throw new DaoException("Could not add tag = " + tagId + " to question = " + questionId, e);
         }
     }
 
@@ -98,46 +90,46 @@ public class QuestionDaoImpl implements QuestionDao {
     }
 
     @Override
-    public long save(QuestionEntity question) {
+    public long save(QuestionEntity questionEntity) {
         String sql = "INSERT INTO question (content) VALUES (?);";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, question.getContent());
+            ps.setString(1, questionEntity.getContent());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
-                throw new DaoException("Could not create question = " + question.getContent());
+                throw new DaoException("Could not create question = " + questionEntity.getContent());
             }
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (!generatedKeys.next()) {
-                    throw new DaoException("Could not create question = " + question.getContent());
+                    throw new DaoException("Could not create question = " + questionEntity.getContent());
                 }
 
                 return generatedKeys.getLong(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Could not create question = " + question.getContent(), e);
+            throw new DaoException("Could not create question = " + questionEntity.getContent(), e);
         }
     }
 
     @Override
-    public void update(QuestionEntity question) {
+    public void update(QuestionEntity questionEntity) {
         String sql = "UPDATE question SET content = ?;";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setString(1, question.getContent());
+            ps.setString(1, questionEntity.getContent());
 
             int rowsUpdated = ps.executeUpdate();
             if (rowsUpdated == 0) {
-                throw new DaoException("Couldn't update question with id = " + question.getId());
+                throw new DaoException("Couldn't update question with id = " + questionEntity.getId());
             }
         } catch (SQLException e) {
-            throw new DaoException("Couldn't update question with id = " + question.getId(), e);
+            throw new DaoException("Couldn't update question with id = " + questionEntity.getId(), e);
         }
     }
 
