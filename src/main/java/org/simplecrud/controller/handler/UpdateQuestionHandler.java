@@ -3,12 +3,11 @@ package org.simplecrud.controller.handler;
 import org.simplecrud.controller.Request;
 import org.simplecrud.controller.Response;
 import org.simplecrud.controller.dto.QuestionDto;
-import org.simplecrud.service.QuestionServiceImpl;
-import org.simplecrud.service.Service;
-import org.simplecrud.service.model.Question;
+import org.simplecrud.service.QuestionService;
+import org.simplecrud.service.impl.QuestionServiceImpl;
 
-public class UpdateQuestionHandler implements QuestionHandler {
-    private final Service<Question> questionService;
+public class UpdateQuestionHandler implements Handler {
+    private final QuestionService questionService;
 
     public UpdateQuestionHandler() {
         this.questionService = new QuestionServiceImpl();
@@ -19,7 +18,7 @@ public class UpdateQuestionHandler implements QuestionHandler {
         QuestionDto questionDto = request.getBody(QuestionDto.class);
 
         try {
-            questionService.update(toQuestion(questionDto));
+            questionService.update(questionDto.toQuestion());
         } catch (RuntimeException e) {
             return Response.notFound();
 

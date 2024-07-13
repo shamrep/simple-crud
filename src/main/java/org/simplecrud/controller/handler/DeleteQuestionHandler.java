@@ -2,12 +2,11 @@ package org.simplecrud.controller.handler;
 
 import org.simplecrud.controller.Request;
 import org.simplecrud.controller.Response;
-import org.simplecrud.service.QuestionServiceImpl;
-import org.simplecrud.service.Service;
-import org.simplecrud.service.model.Question;
+import org.simplecrud.service.QuestionService;
+import org.simplecrud.service.impl.QuestionServiceImpl;
 
-public class DeleteQuestionHandler implements QuestionHandler {
-    private final Service<Question> questionService;
+public class DeleteQuestionHandler implements Handler {
+    private final QuestionService questionService;
 
     public DeleteQuestionHandler() {
         questionService = new QuestionServiceImpl();

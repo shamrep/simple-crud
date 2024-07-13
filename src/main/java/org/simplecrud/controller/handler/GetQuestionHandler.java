@@ -3,15 +3,15 @@ package org.simplecrud.controller.handler;
 import org.simplecrud.controller.Request;
 import org.simplecrud.controller.Response;
 import org.simplecrud.controller.dto.QuestionDto;
-import org.simplecrud.service.QuestionServiceImpl;
-import org.simplecrud.service.Service;
+import org.simplecrud.service.QuestionService;
+import org.simplecrud.service.impl.QuestionServiceImpl;
 import org.simplecrud.service.model.Question;
 
 import java.util.Optional;
 
 public class GetQuestionHandler implements Handler {
 
-    private final Service<Question> questionService;
+    private final QuestionService questionService;
 
     public GetQuestionHandler() {
         questionService = new QuestionServiceImpl();

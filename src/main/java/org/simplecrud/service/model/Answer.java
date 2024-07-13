@@ -7,12 +7,12 @@ import org.simplecrud.repository.entity.AnswerEntity;
 @Getter
 @AllArgsConstructor
 public class Answer {
+
     private Long id;
     private String content;
     private boolean isCorrect;
-    private long questionId;
 
-    public static Answer of(AnswerEntity answerEntity) {
-        return new Answer(answerEntity.getId(), answerEntity.getContent(), answerEntity.isCorrect(), answerEntity.getQuestionId() );
+    public static Answer of(AnswerEntity entity) {
+        return new Answer(entity.getId(), entity.getContent(), entity.isCorrect());
     }
 }
