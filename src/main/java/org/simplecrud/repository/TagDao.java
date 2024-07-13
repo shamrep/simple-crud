@@ -13,7 +13,7 @@ public interface TagDao {
 
     List<TagEntity> getTagsByQuestionId(long questionId);
 
-    long save(TagEntity tagEntity);
+    long create(TagEntity tagEntity);
 
     void update(TagEntity tagEntity);
 

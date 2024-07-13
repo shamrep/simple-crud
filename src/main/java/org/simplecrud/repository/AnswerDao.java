@@ -11,7 +11,7 @@ public interface AnswerDao {
 
     List<AnswerEntity> getAnswersByQuestionId(long questionId);
 
-    long save(AnswerEntity answerEntity);
+    long create(AnswerEntity answerEntity);
 
     void update(AnswerEntity answerEntity);
 

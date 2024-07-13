@@ -52,11 +52,11 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         QuestionEntity questionEntity = new QuestionEntity(null, question.getContent());
-        long questionId = questionDao.save(questionEntity);
+        long questionId = questionDao.create(questionEntity);
 
         question.getAnswers().stream()
                 .map(answer -> new AnswerEntity(null, answer.getContent(), answer.isCorrect(), questionId))
-                .forEach(answerDao::save);
+                .forEach(answerDao::create);
 
         question.getTags().forEach(tag -> questionDao.addTag(questionId, tag.getId()));
 

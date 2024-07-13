@@ -10,7 +10,7 @@ public class Answer {
 
     private Long id;
     private String content;
-    private boolean isCorrect;
+    private boolean correct;
 
     public static Answer of(AnswerEntity entity) {
         return new Answer(entity.getId(), entity.getContent(), entity.isCorrect());

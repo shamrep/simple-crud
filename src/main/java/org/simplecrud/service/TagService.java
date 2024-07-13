@@ -8,7 +8,7 @@ public interface TagService {
 
     Optional<Tag> get(long tagId);
 
-    long save(Tag tag);
+    long create(Tag tag);
 
     void update(Tag tag);
 

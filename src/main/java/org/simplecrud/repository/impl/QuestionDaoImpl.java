@@ -90,7 +90,7 @@ public class QuestionDaoImpl implements QuestionDao {
     }
 
     @Override
-    public long save(QuestionEntity questionEntity) {
+    public long create(QuestionEntity questionEntity) {
         String sql = "INSERT INTO question (content) VALUES (?);";
 
         try (Connection connection = dataSource.getConnection();

@@ -69,7 +69,7 @@ public class AnswerDaoImpl implements AnswerDao {
     }
 
     @Override
-    public long save(AnswerEntity answerEntity) {
+    public long create(AnswerEntity answerEntity) {
         String sql = "INSERT INTO answer(content, is_correct, question_id) VALUES(?,?, ?);";
 
         try (Connection connection = dataSource.getConnection();

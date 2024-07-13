@@ -86,7 +86,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public long save(TagEntity tagEntity) {
+    public long create(TagEntity tagEntity) {
         String sql = "INSERT INTO tag(name) VALUES(?);";
 
         try (Connection connection = dataSource.getConnection();

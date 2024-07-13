@@ -11,7 +11,7 @@ public interface QuestionDao {
 
     List<QuestionEntity> getAll();
 
-    long save(QuestionEntity questionEntity);
+    long create(QuestionEntity questionEntity);
 
     void update(QuestionEntity questionEntity);
 
