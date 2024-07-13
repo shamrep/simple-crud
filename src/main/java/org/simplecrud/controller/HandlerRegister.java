@@ -65,5 +65,4 @@ public class HandlerRegister {
 
         return Optional.ofNullable(handlerByUrl.get(transformed));
     }
-
 }

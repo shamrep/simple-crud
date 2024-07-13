@@ -39,4 +39,8 @@ public class Response {
         return new Response(409, emptyMap(), null);
     }
 
+    public static Response badRequest(Object body) {
+        return new Response(400, emptyMap(), body);
+    }
+
 }
