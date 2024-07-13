@@ -4,16 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
+import java.io.InputStream;
+
 @AllArgsConstructor
 public class Request {
 
     private final HttpServletRequest request;
 
     public <T> T getBody(Class<T> type) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            return objectMapper.readValue(request.getInputStream(), type);
+        try (InputStream is = request.getInputStream()) {
+            return new ObjectMapper().readValue(is, type);
         } catch (Exception e) {
             throw new RuntimeException("Could not read request body", e);
         }

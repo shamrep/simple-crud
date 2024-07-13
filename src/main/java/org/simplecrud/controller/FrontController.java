@@ -44,7 +44,7 @@ public class FrontController extends HttpServlet {
 
         res.setStatus(response.getStatusCode());
         res.setContentType("application/json");
-        writeBodyToOutputStream(response.getBody(), res.getOutputStream());
+        writeBodyToOutputStream(response.getBody(), res);
     }
 
     private Response handle(Handler handler, Request request) {
@@ -57,9 +57,10 @@ public class FrontController extends HttpServlet {
         }
     }
 
-    private void writeBodyToOutputStream(Object body, OutputStream os) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(os, body);
+    private void writeBodyToOutputStream(Object body, HttpServletResponse res) throws IOException {
+        try (OutputStream os = res.getOutputStream()) {
+            new ObjectMapper().writeValue(os, body);
+        }
     }
 
     private Handler notFoundHandler() {
