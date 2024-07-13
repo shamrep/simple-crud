@@ -18,12 +18,10 @@ public class DeleteQuestionHandler implements QuestionHandler {
 
         try {
             long questionId = request.getPathParameter("id", Long.class);
-            questionService.get(questionId);
+            questionService.delete(questionId);
             return Response.noContent();
         } catch (RuntimeException e) {
             return Response.internalServerError(e);
         }
-
-
     }
 }

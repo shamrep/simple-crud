@@ -22,6 +22,10 @@ public class HandlerRegister {
         post("/tags", new CreateTagHandler());
         delete("/tags/:id", new DeleteTagHandler());
         put("/tags/:id", new UpdateTagHandler());
+        get("/answers/:id", new GetAnswerHandler());
+        post("/answers", new CreateAnswerHandler());
+        put("/answers/:id", new UpdateAnswerHandler());
+        delete("/answer/:id", new DeleteTagHandler());
     }
 
     public static HandlerRegister getInstance() {

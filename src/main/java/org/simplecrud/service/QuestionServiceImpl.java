@@ -36,7 +36,7 @@ public class QuestionServiceImpl implements Service<Question> {
 
     private Question toQuestion(QuestionEntity questionEntity, List<AnswerEntity> answerEntities, List<TagEntity> tagEntities) {
         List<Answer> answers = answerEntities.stream()
-                .map(entity -> new Answer(entity.getId(), entity.getContent(), entity.isCorrect()))
+                .map(entity -> new Answer(entity.getId(), entity.getContent(), entity.isCorrect(), entity.getQuestionId()))
                 .toList();
 
         List<Tag> tags = tagEntities.stream()
@@ -64,16 +64,12 @@ public class QuestionServiceImpl implements Service<Question> {
     }
 
     public void delete(Question question) {
-        questionDao.deleteById(question.getId());
+        questionDao.delete(question.getId());
     }
 
     @Override
     public void delete(long id) {
-
-    }
-
-    public boolean deleteById(Long questionId) {
-        return questionDao.deleteById(questionId);
+        questionDao.delete(id);
     }
 
     public List<Question> getAll() {
@@ -86,7 +82,8 @@ public class QuestionServiceImpl implements Service<Question> {
                     .map(answerEntity -> new Answer(
                             answerEntity.getId(),
                             answerEntity.getContent(),
-                            answerEntity.isCorrect()))
+                            answerEntity.isCorrect(),
+                            answerEntity.getQuestionId()))
                     .toList();
 
             List<Tag> tags = tagDao.getTagsByQuestionId(entity.getId())

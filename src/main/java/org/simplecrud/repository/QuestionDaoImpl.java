@@ -148,19 +148,18 @@ public class QuestionDaoImpl implements Dao<QuestionEntity> {
         }
     }
 
-    public boolean deleteById(Long questionId) {
+    @Override
+    public void delete(long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement =
                      connection.prepareStatement("DELETE FROM question WHERE id = ?;")) {
-            preparedStatement.setLong(1, questionId);
+            preparedStatement.setLong(1, id);
 
             int rowDeleted = preparedStatement.executeUpdate();
 
             if (rowDeleted == 0) {
-                throw new RuntimeException("Could not DELETE FROM question WHERE id = " + questionId);
+                throw new RuntimeException("Could not DELETE FROM question WHERE id = " + id);
             }
-
-            return rowDeleted > 0;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }

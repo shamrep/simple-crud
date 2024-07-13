@@ -16,7 +16,6 @@ public class DeleteTagHandler implements TagHandler {
         try {
             tagService.delete(tagId);
             return Response.noContent();
-
         } catch (RuntimeException e) {
             return Response.internalServerError(e);
         }
