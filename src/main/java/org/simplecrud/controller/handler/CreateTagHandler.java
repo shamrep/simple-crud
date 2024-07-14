@@ -13,8 +13,8 @@ public class CreateTagHandler implements Handler {
     @Override
     public Response handle(Request request) {
         TagDto tagDto = request.getBody(TagDto.class);
-
         long tagId = tagService.create(tagDto.toTag());
+
         return Response.created("/tags/" + tagId);
     }
 }

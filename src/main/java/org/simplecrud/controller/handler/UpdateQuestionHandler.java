@@ -27,6 +27,7 @@ public class UpdateQuestionHandler implements Handler {
         }
 
         questionService.update(questionDto.toQuestion());
+
         return Response.noContent();
     }
 }

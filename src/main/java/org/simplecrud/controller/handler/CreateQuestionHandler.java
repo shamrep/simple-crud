@@ -17,8 +17,8 @@ public class CreateQuestionHandler implements Handler {
     @Override
     public Response handle(Request request) {
         QuestionDto questionDto = request.getBody(QuestionDto.class);
-
         long questionId = questionService.save(questionDto.toQuestion());
+
         return Response.created("/questions/" + questionId);
     }
 }

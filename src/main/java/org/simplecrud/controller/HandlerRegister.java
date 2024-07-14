@@ -56,7 +56,6 @@ public class HandlerRegister {
             return Optional.empty();
         }
 
-        // TODO: /questions/:id should match with /questions/123
         String path = req.getPathInfo();
         String transformed = path.replaceAll("/\\d+$", "/:id");
 
