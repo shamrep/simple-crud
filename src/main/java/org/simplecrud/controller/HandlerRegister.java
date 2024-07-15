@@ -18,6 +18,7 @@ public class HandlerRegister {
         post("/questions", new CreateQuestionHandler());
         put("/questions/:id", new UpdateQuestionHandler());
         delete("/questions/:id", new DeleteQuestionHandler());
+        get("/questions", new GetAllQuestionsHandler());
 
         get("/tags/:id", new GetTagHandler());
         post("/tags", new CreateTagHandler());
