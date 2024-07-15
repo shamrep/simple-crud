@@ -1,6 +1,6 @@
 package org.simplecrud.controller.handler;
 
-import org.simplecrud.PathParameterProvider;
+import org.simplecrud.controller.PathParameterProvider;
 import org.simplecrud.controller.Request;
 import org.simplecrud.controller.Response;
 import org.simplecrud.controller.dto.QuestionDto;

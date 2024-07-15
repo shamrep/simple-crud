@@ -1,4 +1,4 @@
-package org.simplecrud;
+package org.simplecrud.controller;
 
 import java.util.*;
 import java.util.regex.Matcher;
