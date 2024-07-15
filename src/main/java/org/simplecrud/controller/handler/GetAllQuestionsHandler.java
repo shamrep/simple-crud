@@ -21,10 +21,7 @@ public class GetAllQuestionsHandler implements Handler {
     public Response handle(Request request) {
         List<Question> questions = questionService.getAll();
 
-        if (questions.isEmpty()) {
-            return Response.notFound();
-        } else {
-            return Response.ok(questions.stream().map(q -> QuestionDto.of(q)).toList());
-        }
+        return Response.ok(questions.stream().map(q -> QuestionDto.of(q)).toList());
     }
 }
+

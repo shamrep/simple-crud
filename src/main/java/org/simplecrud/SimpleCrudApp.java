@@ -26,10 +26,10 @@ public class SimpleCrudApp {
         tomcat.getHost().setAppBase(appBase);
         tomcat.addWebapp(contextPath, appBase);
 
-
         //annotation scanning
         Context ctx = tomcat.addContext("", new File(".").getAbsolutePath());
         ctx.addLifecycleListener(new ContextConfig());
+
         // Add the JAR/folder containing this class to PreResources
         final WebResourceRoot root = new StandardRoot(ctx);
         final URL url = findClassLocation(SimpleCrudApp.class);

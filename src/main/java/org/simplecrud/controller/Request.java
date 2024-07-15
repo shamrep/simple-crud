@@ -8,7 +8,6 @@ import java.io.InputStream;
 
 @AllArgsConstructor
 public class Request {
-
     private final HttpServletRequest request;
 
     public <T> T getBody(Class<T> type) {
@@ -19,7 +18,12 @@ public class Request {
         }
     }
 
+    public String getPath() {
+        return request.getPathInfo();
+    }
+
     public <T> T getPathParameter(String parameterName, Class<T> type) {
+
         String path = request.getPathInfo();
         String[] parts = path.split("/");
 

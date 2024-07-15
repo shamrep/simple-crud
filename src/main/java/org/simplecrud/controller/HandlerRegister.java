@@ -53,6 +53,7 @@ public class HandlerRegister {
 
     public Optional<Handler> findHandler(HttpServletRequest req) {
         Map<String, Handler> handlerByUrl = handlerByUrlAndMethod.get(req.getMethod());
+
         if (handlerByUrl == null) {
             return Optional.empty();
         }
