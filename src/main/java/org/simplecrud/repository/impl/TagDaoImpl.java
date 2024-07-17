@@ -1,11 +1,11 @@
 package org.simplecrud.repository.impl;
 
+import org.simplecrud.repository.connection.ConnectionProvider;
+import org.simplecrud.repository.connection.ConnectionProviderImpl;
 import org.simplecrud.repository.exception.DaoException;
-import org.simplecrud.repository.DataSourceManager;
 import org.simplecrud.repository.TagDao;
 import org.simplecrud.repository.entity.TagEntity;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +18,14 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 public class TagDaoImpl implements TagDao {
 
-    private final DataSource dataSource;
+    private final ConnectionProvider connectionProvider;
+
+    public TagDaoImpl(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
+    }
 
     public TagDaoImpl() {
-        this.dataSource = DataSourceManager.getDataSource();
+        this(new ConnectionProviderImpl());
     }
 
     @Override
@@ -32,7 +36,7 @@ public class TagDaoImpl implements TagDao {
                 JOIN question_tag ON (tag.id = question_tag.tag_id)
                 WHERE question_id = ?""";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setLong(1, questionId);
@@ -49,7 +53,7 @@ public class TagDaoImpl implements TagDao {
     public Optional<TagEntity> get(long tagId) {
         String sql = "SELECT * FROM tag WHERE id = ?";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setLong(1, tagId);
@@ -74,7 +78,7 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public List<TagEntity> getAll() {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement ps = connection.prepareStatement("SELECT * FROM tag");
              ResultSet rs = ps.executeQuery()) {
 
@@ -89,7 +93,7 @@ public class TagDaoImpl implements TagDao {
     public long create(TagEntity tagEntity) {
         String sql = "INSERT INTO tag(name) VALUES(?);";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, tagEntity.getName());
@@ -115,7 +119,7 @@ public class TagDaoImpl implements TagDao {
     public void update(TagEntity tagEntity) {
         String sql = "UPDATE tag SET name = ? WHERE id = ?;";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, tagEntity.getName());
@@ -134,7 +138,7 @@ public class TagDaoImpl implements TagDao {
     public void delete(long tagEntityId) {
         String sql = "DELETE FROM tag WHERE id = ?;";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setLong(1, tagEntityId);
