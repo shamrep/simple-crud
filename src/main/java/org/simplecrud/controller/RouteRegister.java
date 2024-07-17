@@ -71,14 +71,14 @@ public class RouteRegister {
         }
 
         for (int i = 0; i < urlTemplateParts.size(); i++) {
-            String urlTemplatePart = urlTemplateParts.get(i);
-            String urlPart = urlParts.get(i);
+            String templatePart = urlTemplateParts.get(i);
+            String part = urlParts.get(i);
 
-            if (urlTemplatePart.startsWith(":") && isNotNumber(urlPart)) {
-                return false;
-            }
-
-            if (!urlTemplatePart.startsWith(":") && !urlTemplatePart.equals(urlPart)) {
+            if (templatePart.startsWith(":")) {
+                if (isNotNumber(part)) {
+                    return false;
+                }
+            } else if (!templatePart.equals(part)) {
                 return false;
             }
         }
