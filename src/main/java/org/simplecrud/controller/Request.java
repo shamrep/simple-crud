@@ -5,42 +5,37 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 import java.io.InputStream;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 @AllArgsConstructor
 public class Request {
-    private final HttpServletRequest request;
+
+    private final HttpServletRequest httpRequest;
+    private final String urlTemplate;
 
     public <T> T getBody(Class<T> type) {
-        try (InputStream is = request.getInputStream()) {
+        try (InputStream is = httpRequest.getInputStream()) {
             return new ObjectMapper().readValue(is, type);
         } catch (Exception e) {
             throw new RuntimeException("Could not read request body", e);
         }
     }
 
-    public String getPath() {
-        return request.getPathInfo();
-    }
+    public long getPathParameter(String parameterName) {
+        List<String> urlTemplateParts = asList(urlTemplate.split("/"));
+        List<String> urlParts = asList(httpRequest.getPathInfo().split("/"));
 
-    public <T> T getPathParameter(String parameterName, Class<T> type) {
+        for (int i = 0; i < urlTemplateParts.size(); i++) {
+            String urlTemplatePart = urlTemplateParts.get(i);
 
-        String path = request.getPathInfo();
-        String[] parts = path.split("/");
-
-        if (parts.length >= 3) { // Assuming path format "/resource/id"
-            String idStr = parts[2];
-
-            if (type.equals(Integer.class)) {
-                return type.cast(Integer.parseInt(idStr));
-            } else if (type.equals(Long.class)) {
-                return type.cast(Long.parseLong(idStr));
-            } else if (type.equals(String.class)) {
-                return type.cast(idStr);
-            } else {
-                throw new IllegalArgumentException("Invalid path format");
+            if (urlTemplatePart.startsWith(":") && urlTemplatePart.equals(":" + parameterName)) {
+                String urlPart = urlParts.get(i);
+                return Long.parseLong(urlPart);
             }
         }
 
-        return null;
+        throw new RuntimeException("Could not find parameter by name = " + parameterName);
     }
 }

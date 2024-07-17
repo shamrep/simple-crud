@@ -15,7 +15,7 @@ public class UpdateTagHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-        long tagId = request.getPathParameter("id", Long.class);
+        long tagId = request.getPathParameter("id");
         TagDto tagDto = request.getBody(TagDto.class);
         Optional<Tag> tag = tagService.get(tagId);
 

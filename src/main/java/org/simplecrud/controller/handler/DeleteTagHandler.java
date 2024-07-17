@@ -11,7 +11,7 @@ public class DeleteTagHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-        long tagId = request.getPathParameter("id", Long.class);
+        long tagId = request.getPathParameter("id");
         tagService.delete(tagId);
 
         return Response.noContent();

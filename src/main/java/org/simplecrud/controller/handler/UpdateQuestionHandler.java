@@ -18,7 +18,7 @@ public class UpdateQuestionHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-        long questionId = request.getPathParameter("id", Long.class);
+        long questionId = request.getPathParameter("id");
         QuestionDto questionDto = request.getBody(QuestionDto.class);
 
         Optional<Question> question = questionService.get(questionId);

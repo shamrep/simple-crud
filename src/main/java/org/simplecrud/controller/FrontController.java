@@ -35,12 +35,12 @@ public class FrontController extends HttpServlet {
     }
 
     private void doMethod(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
-        Handler handler = HandlerRegister.getInstance()
-                .findHandler(httpRequest)
-                .orElseGet(this::notFoundHandler);
+        Route route = RouteRegister.getInstance()
+                .findRoute(httpRequest)
+                .orElseGet(this::notFoundRoute);
 
-        Request request = new Request(httpRequest);
-        Response response = handle(handler, request);
+        Request request = new Request(httpRequest, route.getUrlTemplate());
+        Response response = handle(route.getHandler(), request);
 
         httpResponse.setStatus(response.getStatusCode());
         setHeaders(httpResponse, response);
@@ -71,7 +71,7 @@ public class FrontController extends HttpServlet {
         }
     }
 
-    private Handler notFoundHandler() {
-        return request -> Response.notFound();
+    private Route notFoundRoute() {
+        return new Route(null, null, request -> Response.notFound());
     }
 }

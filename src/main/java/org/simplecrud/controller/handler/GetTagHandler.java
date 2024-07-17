@@ -15,7 +15,7 @@ public class GetTagHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-        long tagId = request.getPathParameter("id", Long.class);
+        long tagId = request.getPathParameter("id");
         Optional<Tag> optionalTag = tagService.get(tagId);
 
         return optionalTag
