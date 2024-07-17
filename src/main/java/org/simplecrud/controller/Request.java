@@ -31,8 +31,7 @@ public class Request {
             String urlTemplatePart = urlTemplateParts.get(i);
 
             if (urlTemplatePart.startsWith(":") && urlTemplatePart.equals(":" + parameterName)) {
-                String urlPart = urlParts.get(i);
-                return Long.parseLong(urlPart);
+                return Long.parseLong(urlParts.get(i));
             }
         }
 
