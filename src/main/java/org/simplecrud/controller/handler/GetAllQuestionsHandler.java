@@ -5,7 +5,6 @@ import org.simplecrud.controller.Response;
 import org.simplecrud.controller.dto.QuestionDto;
 import org.simplecrud.service.QuestionService;
 import org.simplecrud.service.impl.QuestionServiceImpl;
-import org.simplecrud.service.model.Question;
 
 import java.util.List;
 
@@ -19,9 +18,9 @@ public class GetAllQuestionsHandler implements Handler {
 
     @Override
     public Response handle(Request request) {
-        List<Question> questions = questionService.getAll();
+        List<QuestionDto> questionDtos = questionService.getAll().stream().map(QuestionDto::of).toList();
 
-        return Response.ok(questions.stream().map(q -> QuestionDto.of(q)).toList());
+        return Response.ok(questionDtos);
     }
 }
 

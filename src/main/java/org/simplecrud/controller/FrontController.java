@@ -34,17 +34,17 @@ public class FrontController extends HttpServlet {
         doMethod(req, resp);
     }
 
-    private void doMethod(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    private void doMethod(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
         Handler handler = HandlerRegister.getInstance()
-                .findHandler(req)
+                .findHandler(httpRequest)
                 .orElseGet(this::notFoundHandler);
 
-        Request request = new Request(req);
+        Request request = new Request(httpRequest);
         Response response = handle(handler, request);
 
-        res.setStatus(response.getStatusCode());
-        res.setContentType("application/json");
-        writeBodyToOutputStream(response.getBody(), res);
+        httpResponse.setStatus(response.getStatusCode());
+        setHeaders(httpResponse, response);
+        writeBodyToOutputStream(response.getBody(), httpResponse);
     }
 
     private Response handle(Handler handler, Request request) {
@@ -57,8 +57,16 @@ public class FrontController extends HttpServlet {
         }
     }
 
-    private void writeBodyToOutputStream(Object body, HttpServletResponse res) throws IOException {
-        try (OutputStream os = res.getOutputStream()) {
+    private void setHeaders(HttpServletResponse httpResponse, Response response) {
+        response.getHeaders().forEach((k, v) -> httpResponse.setHeader(k, v.toString()));
+    }
+
+    private void writeBodyToOutputStream(Object body, HttpServletResponse httpResponse) throws IOException {
+        if (body == null) {
+            return;
+        }
+
+        try (OutputStream os = httpResponse.getOutputStream()) {
             new ObjectMapper().writeValue(os, body);
         }
     }

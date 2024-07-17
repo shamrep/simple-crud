@@ -3,15 +3,15 @@ package org.simplecrud.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.simplecrud.controller.handler.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class HandlerRegister {
 
     private static final HandlerRegister INSTANCE = new HandlerRegister();
 
-    private final Map<String, Map<String, Handler>> handlerByUrlAndMethod = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, Handler>> handlerByUrlAndMethod = new HashMap<>();
 
     private HandlerRegister() {
         get("/questions/:id", new GetQuestionHandler());
@@ -47,7 +47,7 @@ public class HandlerRegister {
     }
 
     private void add(String method, String url, Handler handler) {
-        Map<String, Handler> handlerByUrl = handlerByUrlAndMethod.computeIfAbsent(method, k -> new ConcurrentHashMap<>());
+        Map<String, Handler> handlerByUrl = handlerByUrlAndMethod.computeIfAbsent(method, k -> new HashMap<>());
         handlerByUrl.put(url, handler);
     }
 
