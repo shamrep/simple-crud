@@ -11,7 +11,7 @@ public interface QuestionService {
 
     List<Question> getAll();
 
-    long save(Question question);
+    long create(Question question);
 
     void update(Question question);
 

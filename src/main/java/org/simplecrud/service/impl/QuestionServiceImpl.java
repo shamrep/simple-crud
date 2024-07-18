@@ -23,10 +23,21 @@ import java.util.Optional;
 
 public class QuestionServiceImpl implements QuestionService {
 
-    private final AnswerDao answerDao = new AnswerDaoImpl();
-    private final QuestionDao questionDao = new QuestionDaoImpl();
-    private final TagDao tagDao = new TagDaoImpl();
-    private final QuestionValidator questionValidator = new QuestionValidatorImpl();
+    private final AnswerDao answerDao;
+    private final QuestionDao questionDao;
+    private final TagDao tagDao;
+    private final QuestionValidator questionValidator;
+
+    public QuestionServiceImpl(QuestionDao questionDao, AnswerDao answerDao, TagDao tagDao, QuestionValidator questionValidator) {
+        this.questionDao = questionDao;
+        this.tagDao = tagDao;
+        this.questionValidator = questionValidator;
+        this.answerDao = answerDao;
+    }
+
+    public QuestionServiceImpl() {
+        this(new QuestionDaoImpl(), new AnswerDaoImpl(), new TagDaoImpl(), new QuestionValidatorImpl());
+    }
 
     @Override
     public Optional<Question> get(long questionId) {
@@ -45,7 +56,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public long save(Question question) {
+    public long create(Question question) {
         List<String> errors = questionValidator.validate(question);
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
@@ -70,7 +81,7 @@ public class QuestionServiceImpl implements QuestionService {
             throw new ValidationException(errors);
         }
 
-        QuestionEntity questionEntity = new QuestionEntity(null, question.getContent());
+        QuestionEntity questionEntity = new QuestionEntity(question.getId(), question.getContent());
         questionDao.update(questionEntity);
     }
 
