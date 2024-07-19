@@ -14,7 +14,11 @@ public class GetQuestionHandler implements Handler {
     private final QuestionService questionService;
 
     public GetQuestionHandler() {
-        questionService = new QuestionServiceImpl();
+        this(new QuestionServiceImpl());
+    }
+
+    public GetQuestionHandler(QuestionService questionService) {
+        this.questionService = questionService;
     }
 
     @Override

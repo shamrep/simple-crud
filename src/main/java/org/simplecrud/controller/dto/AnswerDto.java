@@ -2,10 +2,12 @@ package org.simplecrud.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.simplecrud.service.model.Answer;
 
 @Getter
+@EqualsAndHashCode
 public class AnswerDto {
 
     private final Long id;
