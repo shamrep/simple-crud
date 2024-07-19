@@ -10,8 +10,12 @@ public class CreateQuestionHandler implements Handler {
 
     private final QuestionService questionService;
 
+    public CreateQuestionHandler(QuestionService questionService) {
+        this.questionService = questionService;
+    }
+
     public CreateQuestionHandler() {
-        this.questionService = new QuestionServiceImpl();
+        this(new QuestionServiceImpl());
     }
 
     @Override
