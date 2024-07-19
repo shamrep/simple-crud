@@ -13,7 +13,11 @@ public class UpdateQuestionHandler implements Handler {
     private final QuestionService questionService;
 
     public UpdateQuestionHandler() {
-        this.questionService = new QuestionServiceImpl();
+        this(new QuestionServiceImpl());
+    }
+
+    public UpdateQuestionHandler(QuestionService questionService) {
+        this.questionService = questionService;
     }
 
     @Override

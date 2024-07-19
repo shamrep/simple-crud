@@ -57,7 +57,7 @@ public class GetQuestionHandlerTest {
     }
 
     @Test
-    public void handle_questionNotFound_responseNotFound() {
+    public void handle_questionNotFound_notFound() {
         // given
         long questionId = 1L;
         when(mockQuestionService.get(questionId)).thenReturn(Optional.empty());
