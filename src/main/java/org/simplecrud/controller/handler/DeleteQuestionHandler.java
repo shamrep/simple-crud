@@ -10,7 +10,11 @@ public class DeleteQuestionHandler implements Handler {
     private final QuestionService questionService;
 
     public DeleteQuestionHandler() {
-        questionService = new QuestionServiceImpl();
+        this(new QuestionServiceImpl());
+    }
+
+    public DeleteQuestionHandler(QuestionService questionService) {
+        this.questionService = questionService;
     }
 
     @Override
