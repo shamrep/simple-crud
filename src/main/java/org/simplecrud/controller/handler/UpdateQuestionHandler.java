@@ -23,14 +23,15 @@ public class UpdateQuestionHandler implements Handler {
     @Override
     public Response handle(Request request) {
         long questionId = request.getPathParameter("id");
-        QuestionDto questionDto = request.getBody(QuestionDto.class);
+
 
         Optional<Question> question = questionService.get(questionId);
         if (question.isEmpty()) {
             return Response.notFound();
         }
 
-        questionService.update(questionDto.toQuestion());
+        QuestionDto questionDto = request.getBody(QuestionDto.class);
+        questionService.update(new Question(questionId, questionDto.getContent(), questionDto.toQuestion().getAnswers(), questionDto.toQuestion().getTags()));
 
         return Response.noContent();
     }
